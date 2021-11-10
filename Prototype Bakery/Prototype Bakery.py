@@ -9,9 +9,7 @@ Most operations are saved in and called from xxxOpt.py files, named according to
 Every supposedly - print() function is modified and replaced with options.printMod() for indentation purposes.
 All {options.ind} too, found after \n are for indentation purposes only. They can be found in other files.
 Interface indentation can be updated in options.py
-test
-test
-test
+
 '''
 ##Essential module dumps
 import os
