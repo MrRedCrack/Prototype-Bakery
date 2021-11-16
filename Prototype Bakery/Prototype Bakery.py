@@ -12,8 +12,8 @@ Interface indentation can be updated in options.py
 
 '''
 ##Essential module dumps
-import os
-import datetime
+from os import system
+from datetime import datetime
 
 import filehand
 ##Check and regenerate file if missing
@@ -46,9 +46,9 @@ import mrpOpt
 ##Interface blocks definition
 def header(clear=False): #Called first for every page to clear screen (if clear==True), then print date, time, and bakery name.
     if clear==True:
-        os.system('cls')
+        system('cls')
     print('')
-    options.printMod(f"{datetime.datetime.today().strftime('%Y-%m-%d - %H:%M:%S'):^80}")
+    options.printMod(f"{datetime.today().strftime('%Y-%m-%d - %H:%M:%S'):^80}")
     options.printMod(f"{'Prototype Bakery':^80}")
     options.printMod(f"{'='*80}")
 
@@ -327,8 +327,8 @@ while isOn:
             if option == "S": #Save2File
                 dirName="Saved Documents" #Folder/directory name, can change here
                 if not filehand.exist(dirName):
-                    filehand.mkdir(dirName)
-                fileName=f"MRP {datetime.datetime.today().strftime('%Y-%m-%d %H-%M-%S')}.txt" #Text file name, can change here
+                    filehand.mkFolder(dirName)
+                fileName=f"MRP {datetime.today().strftime('%Y-%m-%d %H-%M-%S')}.txt" #Text file name, can change here
                 filehand.write(f"{dirName}\\{fileName}","")
                 filehand.printFile(f"{dirName}\\{fileName}",printMRP)
                 input(f"{options.ind}Saved as '{fileName}' in folder '{dirName}'\n{options.ind}Enter to continue.")
