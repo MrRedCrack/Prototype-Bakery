@@ -114,6 +114,7 @@ def pageRecIngredients(recipeNum): #Recipe ingredients block. To be used in ingr
     ingListCurrent=recOpt.getRecIngredients(recipeName)
     if len(ingListCurrent)>0 and ingListCurrent[0] != '':
         printMod(f"{'Item:':^26}{' Amount:':^24}")
+        printMod("-"*80)
         for items in ingListCurrent:
             item=items.split(" ")
             printMod(f"{item[0]:<23}--{float(item[2]):>24.2f} {item[1]}")
