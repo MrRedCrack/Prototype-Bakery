@@ -8,7 +8,7 @@ Most operations are saved in and called from xxxOpt.py files, named according to
 
 Every supposedly - print() function is modified and replaced with printMod() for indentation purposes.
 All {ind} too, found after \n are for indentation purposes only. They can be found in other files.
-Interface indentation can be updated in py
+Interface indentation can be updated in options.py
 
 '''
 ##Essential module dumps
