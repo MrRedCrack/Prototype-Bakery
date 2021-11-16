@@ -20,6 +20,7 @@ Only if the returned list is empty for whatever reason, rec.txt will not be rewr
 ##Essential module dumps
 import filehand
 import options
+from options import printMod
 import mrpOpt
 
 def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of 'ingredientName unit amount' strings per element
@@ -43,7 +44,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                 err="Please use a symbol to replace blank spaces."
         
             if len(err) > 0:
-                options.printMod(err)
+                printMod(err)
             else:
                 itemNameCheck=False
         else:
@@ -62,7 +63,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                     err="Invalid unit. Accepted units are mg/g/kg"
                 
                 if len(err)>0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     itemUnitCheck=False
             else:
@@ -86,7 +87,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                     err="Invalid Number."
                             
                 if len(err)>0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     itemAmountCheck=False
             else:
@@ -125,7 +126,7 @@ def delete(ingListCurrent,targetFile): #Delete ingredient
                 err="Item name not in list."
         
             if len(err) > 0:
-                options.printMod(err)
+                printMod(err)
             else:
                 itemNameCheck=False
         else:
@@ -171,7 +172,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
                 err="Item name not in list."
         
             if len(err) > 0:
-                options.printMod(err)
+                printMod(err)
             else:
                 itemNameCheck=False
         else:
@@ -190,7 +191,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
                     err="Invalid unit. Accepted units are mg/g/kg"
                 
                 if len(err)>0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     itemUnitCheck=False
 
@@ -215,7 +216,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
                     err="Invalid Number."
                             
                 if len(err)>0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     itemAmountCheck=False
             else:

@@ -14,6 +14,7 @@ Orders are stored in orders.txt
 ##Essential module dumps
 import filehand
 import options
+from options import printMod
 from recOpt import getRecipeOptions, getRecipeList
 
 def getOrderOptions(): #Returns a list of ['1','2','3',..,'C'] depending on number of orders in orders.txt
@@ -58,7 +59,7 @@ def add(): #Add order
 
             if cancel != True:
                 if len(err) > 0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     check=False
             else:
@@ -123,7 +124,7 @@ def edit(): #Edit order amount
 
             if cancel != True:
                 if len(err) > 0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     check=False
             else:

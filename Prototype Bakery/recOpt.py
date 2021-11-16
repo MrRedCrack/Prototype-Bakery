@@ -19,6 +19,7 @@ Description-rewrite function automatically deletes the description from recDesc.
 ##Essential module dumps
 import filehand
 import options
+from options import printMod
 
 def getOrderList(): #Returns a list containing orders information after reading orders.txt; 'OrderName', 'OrderAmount' appended per order to orderList
     orderListRaw=filehand.read("orders.txt")
@@ -135,7 +136,7 @@ def rename(): #Rename recipe
 
             if newName.upper() != "C":
                 if len(err) > 0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     check=False
             else:
@@ -193,7 +194,7 @@ def add(): #Add recipe
 
         if newName.upper() != "C":
             if len(err) > 0:
-                options.printMod(err)
+                printMod(err)
             else:
                 check=False
         else:
@@ -257,7 +258,7 @@ def description(): #Rewrite recipe description
             
             if newDesc.upper() != "C":
                 if len(err) > 0:
-                    options.printMod(err)
+                    printMod(err)
                 else:
                     check=False
             else:

@@ -30,7 +30,7 @@ def ingReqList():
     for items in ingListRaw:
         item=items.strip("\n").split(" ")
         ingList.extend(item)
-#    options.printMod(ingList)
+#    print(ingList)
     
     #Get recipe ingredients as recIngList: 'Ingredient name', 'unit', 'amount', 'multiplier' per element
     recIngList=[]
