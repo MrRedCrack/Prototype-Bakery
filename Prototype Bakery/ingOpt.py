@@ -19,8 +19,7 @@ Only if the returned list is empty for whatever reason, rec.txt will not be rewr
 '''
 ##Essential module dumps
 import filehand
-import options
-from options import printMod
+from options import *
 import mrpOpt
 
 def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of 'ingredientName unit amount' strings per element
@@ -30,7 +29,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
     itemNameCheck=True
     while itemNameCheck:
         err=""
-        itemName=str.title(input(f"{options.ind}{'Ingredient name':<20}[C]ancel: "))    
+        itemName=str.title(input(f"{ind}{'Ingredient name':<20}[C]ancel: "))    
         if itemName.upper() != "C":
             itemDuplicateCheck=[]
             for items in ingListCurrent:
@@ -57,7 +56,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
         itemUnitCheck=True
         while itemUnitCheck:
             err=""
-            itemUnit=str.lower(input(f"{options.ind}{'Unit of measure':<20}[C]ancel: "))
+            itemUnit=str.lower(input(f"{ind}{'Unit of measure':<20}[C]ancel: "))
             if itemUnit.upper() != "C":
                 if itemUnit not in ["g","kg","mg"]:
                     err="Invalid unit. Accepted units are mg/g/kg"
@@ -76,7 +75,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
         itemAmountCheck=True
         while itemAmountCheck:
             err=""
-            itemAmount=str(input(f"{options.ind}{'Amount':<20}[C]ancel: "))
+            itemAmount=str(input(f"{ind}{'Amount':<20}[C]ancel: "))
             if itemAmount.upper() != "C":
                 try:
                     if mrpOpt.unitConversion(float(itemAmount),itemUnit,"g") > 999999999:
@@ -116,7 +115,7 @@ def delete(ingListCurrent,targetFile): #Delete ingredient
     itemNameCheck=True
     while itemNameCheck:
         err=""
-        itemName=str.title(input(f"{options.ind}{'Ingredient name':<20}[C]ancel: "))
+        itemName=str.title(input(f"{ind}{'Ingredient name':<20}[C]ancel: "))
         if itemName.upper() != "C":
             itemDuplicateCheck=[]
             for items in ingListCurrent:
@@ -162,7 +161,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
     itemNameCheck=True
     while itemNameCheck:
         err=""
-        itemName=str.title(input(f"{options.ind}{'Ingredient name':<20}[C]ancel: "))    
+        itemName=str.title(input(f"{ind}{'Ingredient name':<20}[C]ancel: "))    
         if itemName.upper() != "C":
             itemDuplicateCheck=[]
             for items in ingListCurrent:
@@ -185,7 +184,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
         itemUnitCheck=True
         while itemUnitCheck:
             err=""
-            itemUnit=str.lower(input(f"{options.ind}{'Unit of measure':<20}[C]ancel: "))
+            itemUnit=str.lower(input(f"{ind}{'Unit of measure':<20}[C]ancel: "))
             if itemUnit.upper() != "C":
                 if itemUnit not in ["g","kg","mg"]:
                     err="Invalid unit. Accepted units are mg/g/kg"
@@ -205,7 +204,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
         itemAmountCheck=True
         while itemAmountCheck:
             err=""
-            itemAmount=str(input(f"{options.ind}{'Amount':<20}[C]ancel: "))
+            itemAmount=str(input(f"{ind}{'Amount':<20}[C]ancel: "))
             if itemAmount.upper() != "C":
                 try:
                     if mrpOpt.unitConversion(float(itemAmount),itemUnit,"g") > 999999999:

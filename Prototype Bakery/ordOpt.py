@@ -13,8 +13,7 @@ Orders are stored in orders.txt
 '''
 ##Essential module dumps
 import filehand
-import options
-from options import printMod
+from options import *
 from recOpt import getRecipeOptions, getRecipeList
 
 def getOrderOptions(): #Returns a list of ['1','2','3',..,'C'] depending on number of orders in orders.txt
@@ -33,7 +32,7 @@ def getOrderList(): #Returns a list containing orders information after reading 
 def add(): #Add order
     
     #Options prompt with input range [number of orders] and C
-    select=options.prompt("Select recipe no.: ",getRecipeOptions())
+    select=prompt("Select recipe no.: ",getRecipeOptions())
 
     if select != "C":
         #Input, and input validation stage
@@ -41,7 +40,7 @@ def add(): #Add order
         cancel=False
         while check:
             err=""
-            addedAmount=str(input(f"{options.ind}{'Add amount':<20}[C]ancel: "))
+            addedAmount=str(input(f"{ind}{'Add amount':<20}[C]ancel: "))
             try:
                 if getRecipeList()[int(select)-1] in getOrderList():
                     orderIndex=getOrderList().index(getRecipeList()[int(select)-1])                
@@ -87,7 +86,7 @@ def add(): #Add order
 def delete(): #Delete order
     
     #Options prompt with input range [number of orders] and C
-    select=options.prompt("Select order no.: ",getOrderOptions())
+    select=prompt("Select order no.: ",getOrderOptions())
 
     #Delete order from orders.txt if not cancelled
     if select != "C":
@@ -104,7 +103,7 @@ def delete(): #Delete order
 def edit(): #Edit order amount
     
     #Options prompt with input range [number of orders] and C
-    select=options.prompt("Select order no.: ",getOrderOptions())
+    select=prompt("Select order no.: ",getOrderOptions())
 
     if select != "C":
         #Input amount, and amount validation stage
@@ -112,7 +111,7 @@ def edit(): #Edit order amount
         cancel=False
         while check:
             err=""
-            editedAmount=str(input(f"{options.ind}{'Edit amount':<20}[C]ancel: "))
+            editedAmount=str(input(f"{ind}{'Edit amount':<20}[C]ancel: "))
             try:            
                 if int(editedAmount) > 1000 or int(editedAmount) <= 0:
                     err="Amount should be more than 0, no more than 1000."
@@ -143,6 +142,6 @@ def edit(): #Edit order amount
             filehand.writelines("orders.txt",newOrderListRaw)
 
 def reset(): #Clear order.txt
-    confirm=options.prompt("Are you sure? [Y]es [C]ancel: ","YC")
+    confirm=prompt("Are you sure? [Y]es [C]ancel: ","YC")
     if confirm != "C":
         filehand.write("orders.txt","")

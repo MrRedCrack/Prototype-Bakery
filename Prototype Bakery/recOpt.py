@@ -18,8 +18,7 @@ Description-rewrite function automatically deletes the description from recDesc.
 '''
 ##Essential module dumps
 import filehand
-import options
-from options import printMod
+from options import *
 
 def getOrderList(): #Returns a list containing orders information after reading orders.txt; 'OrderName', 'OrderAmount' appended per order to orderList
     orderListRaw=filehand.read("orders.txt")
@@ -118,7 +117,7 @@ def rewriteRecipe(currentRecipeName,newIngredientList): #Used by main() within r
 
 ##Operational functions    
 def rename(): #Rename recipe
-    select=options.prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
+    select=prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
  
     if select != "C":
         #New recipe name input and validation stage
@@ -126,7 +125,7 @@ def rename(): #Rename recipe
         cancel=False
         while check:
             err=""
-            newName=str.title(input(f"{options.ind}{'New recipe name':<20}[C]ancel: "))
+            newName=str.title(input(f"{ind}{'New recipe name':<20}[C]ancel: "))
             if len(newName) == 0 or len(newName) > 15:
                 err="Invalid name. Name length must be no more than 15 characters."
             if newName in getRecipeList():
@@ -184,7 +183,7 @@ def add(): #Add recipe
     cancel=False
     while check:
         err=""
-        newName=str.title(input(f"{options.ind}{'New recipe name':<20}[C]ancel: "))
+        newName=str.title(input(f"{ind}{'New recipe name':<20}[C]ancel: "))
         if len(newName) == 0 or len(newName) > 15:
             err="Invalid name. Name length must be less than 15 characters."
         if newName in getRecipeList():
@@ -206,7 +205,7 @@ def add(): #Add recipe
         filehand.append("rec.txt",f"{newName}\n")
 
 def delete(): #Delete recipe
-    select=options.prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
+    select=prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
 
     if select != "C":        
         #delete recipe in recDesc.txt
@@ -244,7 +243,7 @@ def delete(): #Delete recipe
         filehand.write("rec.txt",f"{''.join(finalRecipeFile)}")
         
 def description(): #Rewrite recipe description
-    select=options.prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
+    select=prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
 
     if select != "C":
         #New description input and validation stage
@@ -252,7 +251,7 @@ def description(): #Rewrite recipe description
         cancel=False
         while check:
             err=""
-            newDesc=str(input(f"{options.ind}{'New description (leave blank to delete)':<20}[C]ancel: "))
+            newDesc=str(input(f"{ind}{'New description (leave blank to delete)':<20}[C]ancel: "))
             if len(newDesc) > 20:
                 err="Invalid description. Description length must be no more than 20 characters."
             
