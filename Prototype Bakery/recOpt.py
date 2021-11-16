@@ -19,7 +19,14 @@ Description-rewrite function automatically deletes the description from recDesc.
 ##Essential module dumps
 import filehand
 import options
-import ordOpt
+
+def getOrderList(): #Returns a list containing orders information after reading orders.txt; 'OrderName', 'OrderAmount' appended per order to orderList
+    orderListRaw=filehand.read("orders.txt")
+    orderList=[]
+    for elem in orderListRaw:
+        elem=elem.strip("\n")
+        orderList.append(elem)
+    return orderList
 
 def getRecipeOptions(): #Returns a list of ['1','2','3',..,'C'] depending on number of recipes in rec.txt
     numList=[f"{num+1}" for num in range(len(getRecipeList()))]
@@ -147,7 +154,7 @@ def rename(): #Rename recipe
                 filehand.writelines("recDesc.txt",newDescListRaw)
 
             #rename recipe in orders.txt
-            newOrderListRaw=ordOpt.getOrderList()
+            newOrderListRaw=getOrderList()
             if getRecipeList()[int(select)-1] in newOrderListRaw:
                 orderIndex=newOrderListRaw.index(getRecipeList()[int(select)-1])
                 newOrderListRaw.pop(orderIndex)
@@ -212,9 +219,9 @@ def delete(): #Delete recipe
             filehand.writelines("recDesc.txt",newDescListRaw)            
 
         #delete recipe in orders.txt
-        if getRecipeList()[int(select)-1] in ordOpt.getOrderList():
-            newOrderListRaw=ordOpt.getOrderList()
-            orderIndex=ordOpt.getOrderList().index(getRecipeList()[int(select)-1])
+        if getRecipeList()[int(select)-1] in getOrderList():
+            newOrderListRaw=getOrderList()
+            orderIndex=getOrderList().index(getRecipeList()[int(select)-1])
             
             newOrderListRaw.pop(orderIndex)
             newOrderListRaw.pop(orderIndex)

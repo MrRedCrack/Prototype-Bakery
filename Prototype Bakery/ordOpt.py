@@ -14,7 +14,7 @@ Orders are stored in orders.txt
 ##Essential module dumps
 import filehand
 import options
-import recOpt
+from recOpt import getRecipeOptions, getRecipeList
 
 def getOrderOptions(): #Returns a list of ['1','2','3',..,'C'] depending on number of orders in orders.txt
     numList=[f"{num+1}" for num in range(int(len(getOrderList())/2))]
@@ -32,7 +32,7 @@ def getOrderList(): #Returns a list containing orders information after reading 
 def add(): #Add order
     
     #Options prompt with input range [number of orders] and C
-    select=options.prompt("Select recipe no.: ",recOpt.getRecipeOptions())
+    select=options.prompt("Select recipe no.: ",getRecipeOptions())
 
     if select != "C":
         #Input, and input validation stage
@@ -42,8 +42,8 @@ def add(): #Add order
             err=""
             addedAmount=str(input(f"{options.ind}{'Add amount':<20}[C]ancel: "))
             try:
-                if recOpt.getRecipeList()[int(select)-1] in getOrderList():
-                    orderIndex=getOrderList().index(recOpt.getRecipeList()[int(select)-1])                
+                if getRecipeList()[int(select)-1] in getOrderList():
+                    orderIndex=getOrderList().index(getRecipeList()[int(select)-1])                
                     oldOrderAmount=int(getOrderList()[orderIndex+1])
                     orderExists=True
                 else:
@@ -70,14 +70,14 @@ def add(): #Add order
 
             #Update existing order amount if order already exists
             if orderExists:
-                orderIndex=getOrderList().index(recOpt.getRecipeList()[int(select)-1])                
+                orderIndex=getOrderList().index(getRecipeList()[int(select)-1])                
                 oldOrderAmount=getOrderList()[orderIndex+1]
                 newOrderListRaw.pop(orderIndex+1)
                 newOrderListRaw.insert(orderIndex+1,str(int(addedAmount)+int(oldOrderAmount)))
 
             #Append to order list if order did not exist
             else:
-                newOrderListRaw.append(recOpt.getRecipeList()[int(select)-1])
+                newOrderListRaw.append(getRecipeList()[int(select)-1])
                 newOrderListRaw.append(addedAmount)
 
             #Update orders.txt with new order list via filehand
