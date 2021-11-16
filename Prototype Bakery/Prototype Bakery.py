@@ -14,8 +14,13 @@ Interface indentation can be updated in options.py
 ##Essential module dumps
 from os import system
 from datetime import datetime
-
+from options import *
+import ingOpt
+import recOpt
+import ordOpt
+import mrpOpt
 import filehand
+
 ##Check and regenerate file if missing
 #Inventory
 newIngredientFile=False
@@ -36,12 +41,6 @@ if filehand.exist("recDesc.txt") != True:
 #Orders
 if filehand.exist("orders.txt") != True:
     filehand.write("orders.txt","")
-
-from options import *
-import ingOpt
-import recOpt
-import ordOpt
-import mrpOpt
 
 ##Interface blocks definition
 def header(clear=False): #Called first for every page to clear screen (if clear==True), then print date, time, and bakery name.
@@ -124,7 +123,7 @@ def pageRecIngredients(recipeNum): #Recipe ingredients block. To be used in ingr
     printMod("="*80)
     return recipeName
 
-def pageOrder(toggleRecipes): #Order page block
+def pageOrder(toggleRecipes): #Orders page block
 
     if toggleRecipes:
         printMod("Recipes available:")
@@ -186,25 +185,23 @@ def pageMRP2(): #2nd half of MRP page block. Separated to not be included when p
 
 ##main()
 #MainMenu
-isOn = True
-while isOn:
+while True:
     header(True)
     mainMenu()
     option=(prompt("Option  >>","QIROM")) #Options prompt with input range Q, I, R, O, M
     
     if option == "Q": #Quit program
-        isOn = False
+        break
 
     ##IngredientsPage
     if option == "I":
-        onIng=True
-        while onIng==True:
+        while True:
             header(True)
             pageInventory()
             option=(prompt("Option  >>","BADE")) #Options prompt with input range B, A, D, E
 
             if option == "B": #Back
-                onIng=False
+                break
 
             if option == "A": #Add ingredient
                 ingOpt.add(filehand.read("ing.txt"),"ing.txt")
@@ -217,35 +214,33 @@ while isOn:
 
     ##RecipesPage
     if option == "R":
-        onRec=True
-        while onRec:
+        while True:
             header(True)
             pageRecipe()
             option=(prompt("Option  >>","ABDEVR")) #Options prompt with input range A, B, D, E, V, R
 
             if option == "B": #Back
-                onRec = False
+                break
 
             if option == "V": #View recipe ingredients
-                cancel=False
-                while cancel==False:
+                vCancel=False
+                while vCancel==False:
                     
                     #Options prompt with input range [number of recipes] and C; choose recipe by number to view its ingredients
                     option=prompt("Select recipe no.: ",recOpt.getRecipeOptions())
                     if option == "C": #Cancel recipe selection
-                        cancel=True
+                        vCancel=True
                     
                     ##Recipe ingredients page
                     else:
-                        onRecIngredient=True
-                        while onRecIngredient:
+                        while True:
                             header(True)
                             currentRecipeName=pageRecIngredients(int(option)-1)
                             optionRecIng=(prompt("Option  >>","ADEB")) #Options prompt with input range A, D, E, B
 
-                            if optionRecIng == "B": #Back
-                                onRecIngredient=False
-                                cancel=True
+                            if optionRecIng == "B": #Back, and cancel previous prompt for selecting V
+                                vCancel=True
+                                break
 
                             if optionRecIng == "A": #Add ingredient
                                 addedIng=ingOpt.add(recOpt.getRecIngredients(currentRecipeName),"rec.txt")
@@ -279,15 +274,14 @@ while isOn:
 
     ##OrdersPage
     if option == "O":
-        onOrd=True
         toggleRecipes=True
-        while onOrd:
+        while True:
             header(True)            
             pageOrder(toggleRecipes)
             option=(prompt("Option  >>","BTADER")) #Options prompt with input range B, T, A, D, E, R
 
             if option == "B": #Back
-                onOrd=False
+                break
             
             if option == "T": #Toggle "Available recipes" view
                 toggleRecipes= not toggleRecipes
@@ -306,11 +300,7 @@ while isOn:
 
     ##MRP page
     if option == "M":
-        onMRP=True
-        while onMRP:
-            def printMRP(): #Collecting required functions to print in one function into Save2File
-                header(False)
-                pageMRP1()
+        while True:            
             header(True)
             pageMRP1()
             pageMRP2()
@@ -322,13 +312,16 @@ while isOn:
 
             #Back to menu
             if option == "B": #Back
-                onMRP=False
+                break
 
             if option == "S": #Save2File
-                dirName="Saved Documents" #Folder/directory name, can change here
+                def printMRP(): #Collecting required functions to print in one function into Save2File
+                    header(False)
+                    pageMRP1()
+                dirName="Saved Documents" #Folder/directory name, can edit here
                 if not filehand.exist(dirName):
                     filehand.mkFolder(dirName)
-                fileName=f"MRP {datetime.today().strftime('%Y-%m-%d %H-%M-%S')}.txt" #Text file name, can change here
+                fileName=f"MRP {datetime.today().strftime('%Y-%m-%d %H-%M-%S')}.txt" #Text file name, can edit here
                 filehand.write(f"{dirName}\\{fileName}","")
                 filehand.printFile(f"{dirName}\\{fileName}",printMRP)
                 input(f"{ind}Saved as '{fileName}' in folder '{dirName}'\n{ind}Enter to continue.")
