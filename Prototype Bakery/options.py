@@ -37,7 +37,7 @@ def prompt(prompt,inputRange):
             err="Invalid option!"
         
         #Check if there was error
-        if len(err)>0:
+        if err:
             printMod(f"{err}")
         else:
             check=False

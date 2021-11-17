@@ -37,12 +37,12 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                 itemDuplicateCheck.append(item[0])
             if itemName in itemDuplicateCheck:
                 err="Duplicate name. Add a different item."
-            if len(itemName) == 0 or len(itemName) > 15:
+            if not itemName or len(itemName) > 15:
                 err="Invalid name. Name length must be no more than 15 characters."
             if " " in itemName:
                 err="Please use a symbol to replace blank spaces."
         
-            if len(err) > 0:
+            if err:
                 printMod(err)
             else:
                 itemNameCheck=False
@@ -61,7 +61,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                 if itemUnit not in ["g","kg","mg"]:
                     err="Invalid unit. Accepted units are mg/g/kg"
                 
-                if len(err)>0:
+                if err:
                     printMod(err)
                 else:
                     itemUnitCheck=False
@@ -85,7 +85,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                 except:
                     err="Invalid Number."
                             
-                if len(err)>0:
+                if err:
                     printMod(err)
                 else:
                     itemAmountCheck=False
@@ -124,7 +124,7 @@ def delete(ingListCurrent,targetFile): #Delete ingredient
             if itemName not in itemDuplicateCheck:
                 err="Item name not in list."
         
-            if len(err) > 0:
+            if err:
                 printMod(err)
             else:
                 itemNameCheck=False
@@ -147,7 +147,7 @@ def delete(ingListCurrent,targetFile): #Delete ingredient
         if targetFile == "ing.txt":
             filehand.write("ing.txt",f"{''.join(ingListCurrent)}")
         if targetFile == "rec.txt":
-            if len(ingListCurrent) < 1:
+            if not ingListCurrent:
                 ingListCurrent.append("")
             return ingListCurrent
         
@@ -170,7 +170,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
             if itemName not in itemDuplicateCheck:
                 err="Item name not in list."
         
-            if len(err) > 0:
+            if err:
                 printMod(err)
             else:
                 itemNameCheck=False
@@ -189,7 +189,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
                 if itemUnit not in ["g","kg","mg"]:
                     err="Invalid unit. Accepted units are mg/g/kg"
                 
-                if len(err)>0:
+                if err:
                     printMod(err)
                 else:
                     itemUnitCheck=False
@@ -214,7 +214,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
                 except:
                     err="Invalid Number."
                             
-                if len(err)>0:
+                if err:
                     printMod(err)
                 else:
                     itemAmountCheck=False

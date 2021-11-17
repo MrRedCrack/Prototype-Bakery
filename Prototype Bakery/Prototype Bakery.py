@@ -67,7 +67,7 @@ def pageInventory(): #Inventory menu page block
 
     #Read and print ingredients list from ing.txt
     ingListCurrent=filehand.read("ing.txt")
-    if len(ingListCurrent)>0:
+    if ingListCurrent:
         printMod(f"{'Item:':^26}{' Amount:':^24}")
         printMod('-'*80)
         for items in ingListCurrent:
@@ -112,7 +112,7 @@ def pageRecIngredients(recipeNum): #Recipe ingredients block. To be used in ingr
 
     #Read and print ingredients list from getRecIngredients(recipeName)
     ingListCurrent=recOpt.getRecIngredients(recipeName)
-    if len(ingListCurrent)>0 and ingListCurrent[0] != '':
+    if ingListCurrent and ingListCurrent[0] != '':
         printMod(f"{'Item:':^26}{' Amount:':^24}")
         printMod("-"*80)
         for items in ingListCurrent:
@@ -138,7 +138,7 @@ def pageOrder(toggleRecipes): #Orders page block
 
     printMod(f"{'Current Orders':^80}")
     printMod('='*80)
-    if len(ordOpt.getOrderList()) < 1:
+    if not ordOpt.getOrderList():
         printMod(f"{'No orders yet':^80}")
     for counter in range(0,len(ordOpt.getOrderList()),2):
         printMod(f"{int(counter/2+1)}. {ordOpt.getOrderList()[counter]:<17} - {recOpt.getRecDesc(ordOpt.getOrderList()[counter]):<23}* {ordOpt.getOrderList()[counter+1]:<8}")
@@ -151,7 +151,7 @@ def pageOrder(toggleRecipes): #Orders page block
 def pageMRP1(): #1st half of MRP page block
     printMod(f"{'Material Requirements Plan':^80}")
     printMod("="*80)
-    if len(ordOpt.getOrderList()) < 1:
+    if not ordOpt.getOrderList():
         printMod(f"{'no orders - no plan':^80}") #No MRP if no orders
     else:
 
@@ -176,7 +176,7 @@ def pageMRP1(): #1st half of MRP page block
     printMod("-"*80)
 
 def pageMRP2(): #2nd half of MRP page block. Separated to not be included when printing to MRP txt file
-    if len(ordOpt.getOrderList()) >= 1:
+    if ordOpt.getOrderList():
         printMod("[S]ave to file  [B]ack")
         printMod("="*80)
    
@@ -246,19 +246,19 @@ while True:
                             if optionRecIng == "A": #Add ingredient
                                 addedIng=ingOpt.add(recOpt.getRecIngredients(currentRecipeName),"rec.txt")
 
-                                if len(addedIng) > 0: #Confirm add ingredient if list returned is not empty
+                                if addedIng: #Confirm add ingredient if list returned is not empty
                                     recOpt.rewriteRecipe(currentRecipeName,addedIng)
 
                             if optionRecIng == "D": #Delete ingredient
                                 deletedIng=ingOpt.delete(recOpt.getRecIngredients(currentRecipeName),"rec.txt")
 
-                                if len(deletedIng) > 0: #Confirm delete ingredient if list returned is not empty
+                                if deletedIng: #Confirm delete ingredient if list returned is not empty
                                     recOpt.rewriteRecipe(currentRecipeName,deletedIng)
 
                             if optionRecIng == "E": #Edit ingredient
                                 editedIng=ingOpt.edit(recOpt.getRecIngredients(currentRecipeName),"rec.txt")
 
-                                if len(editedIng) > 0: #Confirm edit ingredient if list returned is not empty
+                                if editedIng: #Confirm edit ingredient if list returned is not empty
                                     recOpt.rewriteRecipe(currentRecipeName,editedIng)
 
             if option == "R": #Rename recipe
@@ -305,7 +305,7 @@ while True:
             header(True)
             pageMRP1()
             pageMRP2()
-            if len(ordOpt.getOrderList()) < 1: #Remove the Save2File option if no orders were made
+            if not ordOpt.getOrderList(): #Remove the Save2File option if no orders were made
                 addS=''
             else:
                 addS='S'

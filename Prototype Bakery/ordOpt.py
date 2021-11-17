@@ -47,6 +47,7 @@ def add(): #Add order
                     oldOrderAmount=int(getOrderList()[orderIndex+1])
                     orderExists=True
                 else:
+                    orderExists=False
                     oldOrderAmount=0            
                 if int(addedAmount)+oldOrderAmount > 1000 or int(addedAmount)+oldOrderAmount <= 0:
                     err="Total amount should be more than 0, no more than 1000."
@@ -57,7 +58,7 @@ def add(): #Add order
                     err="Invalid number."
 
             if cancel != True:
-                if len(err) > 0:
+                if err:
                     printMod(err)
                 else:
                     check=False
@@ -122,7 +123,7 @@ def edit(): #Edit order amount
                     err="Invalid number."
 
             if cancel != True:
-                if len(err) > 0:
+                if err:
                     printMod(err)
                 else:
                     check=False

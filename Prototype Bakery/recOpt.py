@@ -126,7 +126,7 @@ def rename(): #Rename recipe
         while check:
             err=""
             newName=str.title(input(f"{ind}{'New recipe name':<20}[C]ancel: "))
-            if len(newName) == 0 or len(newName) > 15:
+            if not newName or len(newName) > 15:
                 err="Invalid name. Name length must be no more than 15 characters."
             if newName in getRecipeList():
                 err="Name already exists!"
@@ -134,7 +134,7 @@ def rename(): #Rename recipe
                 err="Please use a symbol to replace blank spaces."
 
             if newName.upper() != "C":
-                if len(err) > 0:
+                if err:
                     printMod(err)
                 else:
                     check=False
@@ -184,7 +184,7 @@ def add(): #Add recipe
     while check:
         err=""
         newName=str.title(input(f"{ind}{'New recipe name':<20}[C]ancel: "))
-        if len(newName) == 0 or len(newName) > 15:
+        if not newName or len(newName) > 15:
             err="Invalid name. Name length must be less than 15 characters."
         if newName in getRecipeList():
             err="Name already exists!"
@@ -192,7 +192,7 @@ def add(): #Add recipe
             err="Please use a symbol to replace blank spaces."
 
         if newName.upper() != "C":
-            if len(err) > 0:
+            if err:
                 printMod(err)
             else:
                 check=False
@@ -256,7 +256,7 @@ def description(): #Rewrite recipe description
                 err="Invalid description. Description length must be no more than 20 characters."
             
             if newDesc.upper() != "C":
-                if len(err) > 0:
+                if err:
                     printMod(err)
                 else:
                     check=False
@@ -273,7 +273,7 @@ def description(): #Rewrite recipe description
                 descIndex=getRecDescListRaw().index(getRecipeList()[int(select)-1])
                 
                 #Delete description if left blank
-                if len(newDesc) < 1:
+                if not newDesc:
                     newDescListRaw.pop(descIndex)
                     newDescListRaw.pop(descIndex)
                 #Rewrite description if not blank
@@ -282,7 +282,7 @@ def description(): #Rewrite recipe description
                     newDescListRaw.insert(descIndex+1,newDesc)
 
             #Just append non-blank recipe description if didn't exist in recDesc.txt
-            elif len(newDesc) >= 1:
+            elif newDesc:
                 newDescListRaw.append(getRecipeList()[int(select)-1])
                 newDescListRaw.append(newDesc)
 
