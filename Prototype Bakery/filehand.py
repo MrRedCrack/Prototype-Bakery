@@ -1,46 +1,47 @@
 '''
-filehand.py: filehand stands for File Handler
-This is the function storage for all file-handling operations.
-
+====================================================
+                    filehand.py:
+ Function storage for all file-handling operations.
+====================================================
 '''
-##Essential module dumps
+
 from os.path import dirname,abspath,exists
 from os import mkdir
 import sys
 
-def loc(): #Gets current directory path to be injected into subsequent file-handling functions below
+def loc(): # Current parent directory path
     return f"{dirname(abspath(__file__))}\\"
 
-def exist(path): #Boolean that returns True if 'path' exists in current directory, for example 'inv.txt'
+def exist(path): # Returns True if path (.txt or folder) exists in current directory
     exist=exists(f"{loc()}{path}")
     return exist
 
-def write(path, text): #Creates or rewrites 'path' file with 'text'
+def write(path, text): # Creates or rewrites .txt with text
     handler=open(f"{loc()}{path}",'w')
     handler.write(text)
     handler.close()
 
-def writelines(path, list): #Joins each string in list as separate lines injected with "\n", then rewrites 'path' with the lines
+def writelines(path, list): # Inject each string with "\n" in list, then rewrites .txt with the lines
     linesList=[]
     for elem in list:
         linesList.append(elem+"\n")
     write(path,f"{''.join(linesList)}")
 
-def append(path, text): #Appends 'text' to 'path' file
+def append(path, text): # Appends text to .txt
     handler=open(f"{loc()}{path}","a")
     handler.write(text)
     handler.close()
 
-def read(path): #Returns raw list of file lines as string elements, including the "\n"s
+def read(path): # Returns raw list of .txt lines as strings with "\n"
     handler=open(f"{loc()}{path}",'r')
     data=handler.readlines()
     handler.close()
     return data
 
-def mkFolder(directoryName): #Create a directory within current directory
+def mkFolder(directoryName): # Create a directory/folder
     mkdir(f"{loc()}{directoryName}")
 
-def printFile(path,function): #Prints 'function()' into 'path' file
+def printFile(path,function): # Prints function() into .txt
     original_stdout=sys.stdout
     with open(f"{loc()}{path}",'w') as file:
         sys.stdout = file

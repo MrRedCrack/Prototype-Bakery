@@ -1,20 +1,18 @@
 '''
-mrpOpt.py: mrpOpt stands for Material Requirements Plan Options
-This is the function storage for the "Material Requirements Plan (MRP)" page.
-
-The function ingReqList() contains the algorithm for calculating and returning a 2D list of required ingredients based on orders made, 
-along with their respective information.
-
-Hashtags were placed before certain codes for log feedback during debug. 
-Undo them to view the algorithm process during MRP generation.
-
+======================================================================================================
+                          mrpOpt.py: Material Requirements Plan Options
+                   Function storage for the Material Requirements Plan page.
+------------------------------------------------------------------------------------------------------
+ingReqList() contains the algorithm for calculating and returning a 2D list of required ingredients 
+based on orders made, along with their respective stock, demand, and shortfall.
+======================================================================================================
 '''
 
 import filehand
 import recOpt
 import ordOpt
 
-def unitConversion(amount,amountUnit,targetUnit): #Convert injected amount into the standard g unit for calculation
+def unitConversion(amount,amountUnit,targetUnit): # Convert injected amount to targetUnit
     if targetUnit=="g":
         if amountUnit=="kg":
             amount=float(amount)*1000
@@ -24,74 +22,72 @@ def unitConversion(amount,amountUnit,targetUnit): #Convert injected amount into 
 
 def ingReqList():
     
-    #Get inventory as ingList
+    # Get inventory as ingList
     ingListRaw=filehand.read("inv.txt")
     ingList=[]
     for items in ingListRaw:
-        item=items.strip("\n").split(" ")
+        item=items.strip("\n").split()
         ingList.extend(item)
-#    print(ingList)
     
-    #Get recipe ingredients as recIngList: 'Ingredient name', 'unit', 'amount', 'multiplier' per element
+    # Get recipe ingredients according to orders as recIngList: 
+    # 'Ingredient name', 'unit', 'amount', 'multiplier' appended per ingredient
     recIngList=[]
-    for counter in range(0,len(ordOpt.getOrderList()),2):
-        recIngListElem=recOpt.getRecIngredients(ordOpt.getOrderList()[counter])
+    for i in range(0,len(ordOpt.getOrderList()),2):
+        recIngListElem=recOpt.getRecIngredients(ordOpt.getOrderList()[i])
         for ingredients in recIngListElem:
             ingredients=ingredients.split()
             recIngList.extend(ingredients)
-            recIngList.append(ordOpt.getOrderList()[counter+1])    
-#    input(recIngList)
+            recIngList.append(ordOpt.getOrderList()[i+1])    
 
-    ##Condensation and multiplication...
-    #Condense recIngList into: 'Ingredient name', 'amount in g' per element, combine duplicate ingredients
+    # # Condensation and multiplication...
+    # Condense recIngList into: 'Ingredient name', 'amount' per ingredient, 
+    # while combining duplicate ingredients
     condensedRecIngList=[] 
-    for counter in range(0,len(recIngList),4):
-        ingredientName=recIngList[counter]
+    for i in range(0,len(recIngList),4):
+        ingredientName=recIngList[i]
         
-        #Append ingredient if not in condensedRecIngList
+        # Append ingredient if not in condensedRecIngList
         if ingredientName not in condensedRecIngList:
             condensedRecIngList.append(ingredientName)
-            amountInGrams=f"{unitConversion(recIngList[counter+2],recIngList[counter+1],'g')*int(recIngList[counter+3]):.2f}"
+            amountInGrams=f"{unitConversion(recIngList[i+2],recIngList[i+1],'g')*int(recIngList[i+3]):.2f}"
             condensedRecIngList.append(amountInGrams)
         else:
-            amountInGrams=unitConversion(recIngList[counter+2],recIngList[counter+1],'g')*int(recIngList[counter+3])
+            amountInGrams=unitConversion(recIngList[i+2],recIngList[i+1],'g')*int(recIngList[i+3])
             itemIndex=condensedRecIngList.index(ingredientName)
             oldAmount=float(condensedRecIngList[itemIndex+1])
             condensedRecIngList.pop(itemIndex+1)
             condensedRecIngList.insert(itemIndex+1,f"{amountInGrams+oldAmount:.2f}")
-#    input(condensedRecIngList)
 
-    #Initiate algorithm
-    reqList=[] #[Ingredient name, Stock amount(N/A if none), Demand amount, Shortfall amount(N/A if none), Unit] per element
-    for counter in range(0,len(condensedRecIngList),2):
+    # Final compilation
+    reqList=[] 
+    for i in range(0,len(condensedRecIngList),2):
         
-        #Ingredient name
-        ingName=condensedRecIngList[counter]
+        # Ingredient name
+        ingName=condensedRecIngList[i]
         
-        #Stock amount
+        # Stock amount
         stockAmount='0'
         if ingName in ingList:
             ingListIndex=ingList.index(ingName)
             stockAmount=f"{unitConversion(ingList[ingListIndex+2],ingList[ingListIndex+1],'g'):.2f}"
         
-        #Demand amount
-        demandAmount=condensedRecIngList[counter+1]
+        # Demand amount
+        demandAmount=condensedRecIngList[i+1]
 
-        #Shortfall amount
+        # Shortfall amount
         shortfallAmount='N/A'
         if float(demandAmount)>float(stockAmount):
             shortfallAmount=f"{float(demandAmount)-float(stockAmount):.2f}"
 
-        #Convert stock amount to N/A if value stays 0
+        # Convert stock amount to N/A if value stays 0
         if stockAmount=='0':
             stockAmount='N/A'
 
-        #Standard unit: g if there is shortfall, otherwise append blank element as unit
+        # Standard unit: g if there is shortfall, otherwise append blank element as unit
         unit=''
         if shortfallAmount != 'N/A':
             unit='g'
         
-        #Append everyone as a list into 2D list: reqList
+        # Append every element above as a list into 2D list
         reqList.append([ingName,stockAmount,demandAmount,shortfallAmount,unit])
-#    input(reqList)
-    return reqList #Return 2D list
+    return reqList
