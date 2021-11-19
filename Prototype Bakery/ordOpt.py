@@ -11,7 +11,7 @@ it defines the operational functions for managing orders:
 Orders are stored in orders.txt
 
 '''
-##Essential module dumps
+
 import filehand
 from options import *
 from recOpt import getRecipeOptions, getRecipeList
@@ -32,38 +32,37 @@ def getOrderList(): #Returns a list containing orders information after reading 
 def add(): #Add order
     
     #Options prompt with input range [number of orders] and C
-    select=prompt("Select recipe no.: ",getRecipeOptions())
+    select=prompt(f"{'Select recipe no.':<20}[C]ancel: ",getRecipeOptions())
 
     if select != "C":
-        #Input, and input validation stage
-        check=True
         cancel=False
-        while check:
+        select=int(select)-1
+        #Input, and input validation stage
+        while True:
             err=""
             addedAmount=str(input(f"{ind}{'Add amount':<20}[C]ancel: "))
             try:
-                if getRecipeList()[int(select)-1] in getOrderList():
-                    orderIndex=getOrderList().index(getRecipeList()[int(select)-1])                
+                if getRecipeList()[select] in getOrderList():
+                    orderIndex=getOrderList().index(getRecipeList()[select])                
                     oldOrderAmount=int(getOrderList()[orderIndex+1])
                     orderExists=True
                 else:
-                    orderExists=False
                     oldOrderAmount=0            
+                    orderExists=False
                 if int(addedAmount)+oldOrderAmount > 1000 or int(addedAmount)+oldOrderAmount <= 0:
                     err="Total amount should be more than 0, no more than 1000."
             except:
                 if addedAmount.upper() == "C":
-                    cancel = True
+                    cancel=True
+                    break
                 else:
                     err="Invalid number."
 
-            if cancel != True:
+            if not cancel:
                 if err:
                     printMod(err)
                 else:
-                    check=False
-            else:
-                check=False
+                    break
 
         #Write added order to orders.txt if not cancelled
         if not cancel:
@@ -71,14 +70,14 @@ def add(): #Add order
 
             #Update existing order amount if order already exists
             if orderExists:
-                orderIndex=getOrderList().index(getRecipeList()[int(select)-1])                
+                orderIndex=getOrderList().index(getRecipeList()[select])                
                 oldOrderAmount=getOrderList()[orderIndex+1]
                 newOrderListRaw.pop(orderIndex+1)
                 newOrderListRaw.insert(orderIndex+1,str(int(addedAmount)+int(oldOrderAmount)))
 
             #Append to order list if order did not exist
             else:
-                newOrderListRaw.append(getRecipeList()[int(select)-1])
+                newOrderListRaw.append(getRecipeList()[select])
                 newOrderListRaw.append(addedAmount)
 
             #Update orders.txt with new order list via filehand
@@ -87,14 +86,14 @@ def add(): #Add order
 def delete(): #Delete order
     
     #Options prompt with input range [number of orders] and C
-    select=prompt("Select order no.: ",getOrderOptions())
+    select=prompt(f"{'Select order no.':<20}[C]ancel: ",getOrderOptions())
 
     #Delete order from orders.txt if not cancelled
     if select != "C":
-        
+        select=int(select)-1
         #Find and delete order in order list
         newOrderListRaw=getOrderList()
-        orderIndex=((int(select)-1)*2)
+        orderIndex=(select*2)
         newOrderListRaw.pop(orderIndex)
         newOrderListRaw.pop(orderIndex)
 
@@ -104,13 +103,13 @@ def delete(): #Delete order
 def edit(): #Edit order amount
     
     #Options prompt with input range [number of orders] and C
-    select=prompt("Select order no.: ",getOrderOptions())
+    select=prompt(f"{'Select order no.':<20}[C]ancel: ",getOrderOptions())
 
     if select != "C":
-        #Input amount, and amount validation stage
-        check=True
         cancel=False
-        while check:
+        select=int(select)-1
+        #Input amount, and amount validation stage
+        while True:
             err=""
             editedAmount=str(input(f"{ind}{'Edit amount':<20}[C]ancel: "))
             try:            
@@ -119,21 +118,20 @@ def edit(): #Edit order amount
             except:
                 if editedAmount.upper() == "C":
                     cancel = True
+                    break
                 else:
                     err="Invalid number."
 
-            if cancel != True:
+            if not cancel:
                 if err:
                     printMod(err)
                 else:
-                    check=False
-            else:
-                check=False
+                    break
 
         #Update order.txt if not cancelled
         if not cancel:            
             newOrderListRaw=getOrderList()
-            orderIndex=(int(select)-1)*2
+            orderIndex=select*2
 
             #Edit order amount
             newOrderListRaw.pop(orderIndex+1)

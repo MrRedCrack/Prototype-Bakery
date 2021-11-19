@@ -9,7 +9,7 @@ Here lies only the operational functions for only managing ingredients:
 
 Depending on the targetFile, the functions will either... 
 directly rewrite the file:
-ing.txt (inventory ingredients) 
+inv.txt (inventory ingredients) 
 
 or target:
 rec.txt (recipe ingredients),
@@ -17,7 +17,7 @@ returning a list to be reviewed in main() to decide whether to rewrite the rec.t
 Only if the returned list is empty for whatever reason, rec.txt will not be rewritten.
 
 '''
-##Essential module dumps
+
 import filehand
 from options import *
 import mrpOpt
@@ -26,8 +26,7 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
     cancel=False
     
     #Item name input and validation stage
-    itemNameCheck=True
-    while itemNameCheck:
+    while True:
         err=""
         itemName=str.title(input(f"{ind}{'Ingredient name':<20}[C]ancel: "))    
         if itemName.upper() != "C":
@@ -45,16 +44,15 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
             if err:
                 printMod(err)
             else:
-                itemNameCheck=False
+                break
         else:
             cancel=True
-            itemNameCheck=False        
+            break       
     
-    if cancel==False:
+    if not cancel:
        
         #Item unit input and validation stage
-        itemUnitCheck=True
-        while itemUnitCheck:
+        while True:
             err=""
             itemUnit=str.lower(input(f"{ind}{'Unit of measure':<20}[C]ancel: "))
             if itemUnit.upper() != "C":
@@ -64,16 +62,15 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                 if err:
                     printMod(err)
                 else:
-                    itemUnitCheck=False
+                    break
             else:
                 cancel=True
-                itemUnitCheck=False
+                break
         
-    if cancel==False:
+    if not cancel:
         
         #Item amount input and validation stage
-        itemAmountCheck=True
-        while itemAmountCheck:
+        while True:
             err=""
             itemAmount=str(input(f"{ind}{'Amount':<20}[C]ancel: "))
             if itemAmount.upper() != "C":
@@ -88,17 +85,17 @@ def add(ingListCurrent,targetFile): #Add ingredient. ingListCurrent is a list of
                 if err:
                     printMod(err)
                 else:
-                    itemAmountCheck=False
+                    break
             else:
                 cancel=True
-                itemAmountCheck=False
+                break
         
-    if cancel==False:
+    if not cancel:
         
-        #Add ingredient to ingListCurrent if not cancelled, then either rewrites ing.txt, or returns ingListCurrent to main() for final steps.
-        if targetFile == "ing.txt":
+        #Add ingredient to ingListCurrent if not cancelled, then either rewrites inv.txt, or returns ingListCurrent to main() for final steps.
+        if targetFile == "inv.txt":
             ingListCurrent.append(f"{itemName} {itemUnit} {itemAmount}\n")
-            filehand.write("ing.txt",f"{''.join(ingListCurrent)}")
+            filehand.write("inv.txt",f"{''.join(ingListCurrent)}")
         if targetFile == "rec.txt":
             if '' in ingListCurrent:
                 ingListCurrent.remove('')
@@ -112,8 +109,7 @@ def delete(ingListCurrent,targetFile): #Delete ingredient
     cancel=False
     
     #Item name input and validation stage
-    itemNameCheck=True
-    while itemNameCheck:
+    while True:
         err=""
         itemName=str.title(input(f"{ind}{'Ingredient name':<20}[C]ancel: "))
         if itemName.upper() != "C":
@@ -127,12 +123,12 @@ def delete(ingListCurrent,targetFile): #Delete ingredient
             if err:
                 printMod(err)
             else:
-                itemNameCheck=False
+                break
         else:
             cancel=True
-            itemNameCheck=False 
+            break 
     
-    if cancel==False:
+    if not cancel:
         
         #Delete ingredient from ingListCurrent
         itemDuplicateCheck=[]
@@ -144,8 +140,8 @@ def delete(ingListCurrent,targetFile): #Delete ingredient
                 ingListCurrent.remove(ingListCurrent[itemDuplicateCheck.index(items)])
 
         #Actions depending on targetFile
-        if targetFile == "ing.txt":
-            filehand.write("ing.txt",f"{''.join(ingListCurrent)}")
+        if targetFile == "inv.txt":
+            filehand.write("inv.txt",f"{''.join(ingListCurrent)}")
         if targetFile == "rec.txt":
             if not ingListCurrent:
                 ingListCurrent.append("")
@@ -158,8 +154,7 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
     cancel=False       
     
     #Item name input and validation stage
-    itemNameCheck=True
-    while itemNameCheck:
+    while True:
         err=""
         itemName=str.title(input(f"{ind}{'Ingredient name':<20}[C]ancel: "))    
         if itemName.upper() != "C":
@@ -173,12 +168,12 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
             if err:
                 printMod(err)
             else:
-                itemNameCheck=False
+                break
         else:
             cancel=True
-            itemNameCheck=False 
+            break 
     
-    if cancel==False:
+    if not cancel:
         
         #Item unit input and validation stage
         itemUnitCheck=True
@@ -192,13 +187,13 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
                 if err:
                     printMod(err)
                 else:
-                    itemUnitCheck=False
+                    break
 
             else:
                 cancel=True
-                itemUnitCheck=False
+                break
         
-    if cancel==False:
+    if not cancel:
 
         #Item amount input and validation stage        
         itemAmountCheck=True
@@ -217,25 +212,25 @@ def edit(ingListCurrent,targetFile): #Edit ingredient unit and amount
                 if err:
                     printMod(err)
                 else:
-                    itemAmountCheck=False
+                    break
             else:
                 cancel=True
-                itemAmountCheck=False
+                break
         
-    if cancel==False:
+    if not cancel:
         
         #Edit ingListCurrent with new unit and amount
         for items in itemDuplicateCheck:
             if itemName == items:
                 ingListCurrent.remove(ingListCurrent[itemDuplicateCheck.index(items)])
-                if targetFile == "ing.txt":
+                if targetFile == "inv.txt":
                     ingListCurrent.insert(itemDuplicateCheck.index(items),f"{itemName} {itemUnit} {itemAmount}\n")
                 if targetFile == "rec.txt":
                     ingListCurrent.insert(itemDuplicateCheck.index(items),f"{itemName} {itemUnit} {itemAmount}")
         
         #Actions depending on targetFile
-        if targetFile == "ing.txt":
-            filehand.write("ing.txt",f"{''.join(ingListCurrent)}")
+        if targetFile == "inv.txt":
+            filehand.write("inv.txt",f"{''.join(ingListCurrent)}")
         if targetFile == "rec.txt":
             return ingListCurrent
     else:

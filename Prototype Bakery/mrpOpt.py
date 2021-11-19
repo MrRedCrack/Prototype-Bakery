@@ -9,7 +9,7 @@ Hashtags were placed before certain codes for log feedback during debug.
 Undo them to view the algorithm process during MRP generation.
 
 '''
-##Essential module dumps
+
 import filehand
 import recOpt
 import ordOpt
@@ -25,7 +25,7 @@ def unitConversion(amount,amountUnit,targetUnit): #Convert injected amount into 
 def ingReqList():
     
     #Get inventory as ingList
-    ingListRaw=filehand.read("ing.txt")
+    ingListRaw=filehand.read("inv.txt")
     ingList=[]
     for items in ingListRaw:
         item=items.strip("\n").split(" ")

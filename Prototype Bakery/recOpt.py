@@ -3,7 +3,7 @@ recOpt.py: recOpt stands for Recipe Options
 This is the function storage for the "Recipes" page.
 
 For there are myriads of information contained within each recipe (recipe, recipe description, recipe ingredients),
-a bunch of getXxxXx..() functions were made for receiving different kinds of recipe information for operation purposes.
+a bunch of getXxxXx..() functions were made for receiving different kinds of recipe information for operations.
 
 Below the 'get' functions lies the operational functions for managing recipes:
 1. rename recipe
@@ -12,11 +12,11 @@ Below the 'get' functions lies the operational functions for managing recipes:
 4. description rewrite
 
 The recipe description list is stored in recDesc.txt, 
-separately from rec.txt (recipe ingredients)
+separately from rec.txt (recipe name, recipe ingredients)
 Description-rewrite function automatically deletes the description from recDesc.txt if a blank description is entered.
 
 '''
-##Essential module dumps
+
 import filehand
 from options import *
 
@@ -57,7 +57,7 @@ def getRecipeListRaw(): #Returns list: ['recipe1', ['ingredient1', 'unit', 'amou
     for items in recListCurrent:
         recipeInfo=items.strip("\n").split(" ")
         if len(recipeInfo) == 1:
-            recipeInfo.append('')
+            recipeInfo.append('') #Append 'recipex', '' to final list if recipe does not have ingredients
         recipeName=recipeInfo[0]
         recipeNameList.append(recipeName)
         recipeList.append(recipeName)
@@ -117,13 +117,13 @@ def rewriteRecipe(currentRecipeName,newIngredientList): #Used by main() within r
 
 ##Operational functions    
 def rename(): #Rename recipe
-    select=prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
+    select=prompt(f"{'Select recipe no.':<20}[C]ancel: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
  
     if select != "C":
-        #New recipe name input and validation stage
-        check=True
         cancel=False
-        while check:
+        select=int(select)-1
+        #New recipe name input and validation stage
+        while True:
             err=""
             newName=str.title(input(f"{ind}{'New recipe name':<20}[C]ancel: "))
             if not newName or len(newName) > 15:
@@ -137,17 +137,17 @@ def rename(): #Rename recipe
                 if err:
                     printMod(err)
                 else:
-                    check=False
+                    break
             else:
                 cancel=True
-                check=False
+                break
         
-        if cancel != True:
+        if not cancel:
             
             #rename recipe in recDesc.txt
             newDescListRaw=getRecDescListRaw()
-            if getRecipeList()[int(select)-1] in newDescListRaw:
-                descIndex=newDescListRaw.index(getRecipeList()[int(select)-1])
+            if getRecipeList()[select] in newDescListRaw:
+                descIndex=newDescListRaw.index(getRecipeList()[select])
                 newDescListRaw.pop(descIndex)
                 newDescListRaw.insert(descIndex,newName)
 
@@ -155,8 +155,8 @@ def rename(): #Rename recipe
 
             #rename recipe in orders.txt
             newOrderListRaw=getOrderList()
-            if getRecipeList()[int(select)-1] in newOrderListRaw:
-                orderIndex=newOrderListRaw.index(getRecipeList()[int(select)-1])
+            if getRecipeList()[select] in newOrderListRaw:
+                orderIndex=newOrderListRaw.index(getRecipeList()[select])
                 newOrderListRaw.pop(orderIndex)
                 newOrderListRaw.insert(orderIndex,newName)
 
@@ -164,8 +164,8 @@ def rename(): #Rename recipe
 
             #rename recipe in rec.txt
             tempRecipeList=getRecipeList()
-            tempRecipeList.pop(int(select)-1)
-            tempRecipeList.insert(int(select)-1,newName)
+            tempRecipeList.pop(select)
+            tempRecipeList.insert(select,newName)
             newRecipeFile=[]
             counter=0
             for elem in tempRecipeList:
@@ -178,10 +178,10 @@ def rename(): #Rename recipe
             filehand.write("rec.txt",''.join(newRecipeFile))         
 
 def add(): #Add recipe
-    #New recipe name input and validation stage    
-    check=True
     cancel=False
-    while check:
+
+    #New recipe name input and validation stage    
+    while True:
         err=""
         newName=str.title(input(f"{ind}{'New recipe name':<20}[C]ancel: "))
         if not newName or len(newName) > 15:
@@ -195,23 +195,24 @@ def add(): #Add recipe
             if err:
                 printMod(err)
             else:
-                check=False
+                break
         else:
             cancel=True
-            check=False
+            break
     
     #Append recipe name to rec.txt
     if cancel != True:
         filehand.append("rec.txt",f"{newName}\n")
 
 def delete(): #Delete recipe
-    select=prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
+    select=prompt(f"{'Select recipe no.':<20}[C]ancel: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
 
-    if select != "C":        
+    if select != "C":
+        select=int(select)-1        
         #delete recipe in recDesc.txt
-        if getRecipeList()[int(select)-1] in getRecDescListRaw():
+        if getRecipeList()[select] in getRecDescListRaw():
             newDescListRaw=getRecDescListRaw()
-            descIndex=getRecDescListRaw().index(getRecipeList()[int(select)-1])
+            descIndex=getRecDescListRaw().index(getRecipeList()[select])
             
             newDescListRaw.pop(descIndex)
             newDescListRaw.pop(descIndex)
@@ -219,9 +220,9 @@ def delete(): #Delete recipe
             filehand.writelines("recDesc.txt",newDescListRaw)            
 
         #delete recipe in orders.txt
-        if getRecipeList()[int(select)-1] in getOrderList():
+        if getRecipeList()[select] in getOrderList():
             newOrderListRaw=getOrderList()
-            orderIndex=getOrderList().index(getRecipeList()[int(select)-1])
+            orderIndex=getOrderList().index(getRecipeList()[select])
             
             newOrderListRaw.pop(orderIndex)
             newOrderListRaw.pop(orderIndex)
@@ -230,9 +231,9 @@ def delete(): #Delete recipe
             
         #delete recipe in rec.txt
         tempRecipeList=getRecipeList()
-        tempRecipeList.pop(int(select)-1)
+        tempRecipeList.pop(select)
         tempIngredientsList=getRecIngList()
-        tempIngredientsList.pop(int(select)-1)
+        tempIngredientsList.pop(select)
         finalRecipeFile=[]
         for elem in tempRecipeList:
             if ''.join(tempIngredientsList[tempRecipeList.index(elem)]) != '':
@@ -243,13 +244,13 @@ def delete(): #Delete recipe
         filehand.write("rec.txt",f"{''.join(finalRecipeFile)}")
         
 def description(): #Rewrite recipe description
-    select=prompt("Select recipe no.: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
+    select=prompt(f"{'Select recipe no.':<20}[C]ancel: ",getRecipeOptions()) #Options prompt with input range [number of recipes] and C; choose recipe by number
 
     if select != "C":
-        #New description input and validation stage
-        check=True
         cancel=False
-        while check:
+        select=int(select)-1
+        #New description input and validation stage
+        while True:
             err=""
             newDesc=str(input(f"{ind}{'New description (leave blank to delete)':<20}[C]ancel: "))
             if len(newDesc) > 20:
@@ -259,18 +260,18 @@ def description(): #Rewrite recipe description
                 if err:
                     printMod(err)
                 else:
-                    check=False
+                    break
             else:
                 cancel=True
-                check=False
+                break
       
-        if cancel != True:
+        if not cancel:
             #Rewrite recipe description
             newDescListRaw=getRecDescListRaw()
             
             #Edit recipe description if an old description existed
-            if getRecipeList()[int(select)-1] in getRecDescListRaw():
-                descIndex=getRecDescListRaw().index(getRecipeList()[int(select)-1])
+            if getRecipeList()[select] in getRecDescListRaw():
+                descIndex=getRecDescListRaw().index(getRecipeList()[select])
                 
                 #Delete description if left blank
                 if not newDesc:
@@ -283,7 +284,7 @@ def description(): #Rewrite recipe description
 
             #Just append non-blank recipe description if didn't exist in recDesc.txt
             elif newDesc:
-                newDescListRaw.append(getRecipeList()[int(select)-1])
+                newDescListRaw.append(getRecipeList()[select])
                 newDescListRaw.append(newDesc)
 
             filehand.writelines("recDesc.txt",newDescListRaw)

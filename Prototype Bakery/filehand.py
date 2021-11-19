@@ -11,7 +11,7 @@ import sys
 def loc(): #Gets current directory path to be injected into subsequent file-handling functions below
     return f"{dirname(abspath(__file__))}\\"
 
-def exist(path): #Boolean that returns True if 'path' exists in current directory, for example 'ing.txt'
+def exist(path): #Boolean that returns True if 'path' exists in current directory, for example 'inv.txt'
     exist=exists(f"{loc()}{path}")
     return exist
 

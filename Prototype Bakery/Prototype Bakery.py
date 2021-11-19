@@ -6,14 +6,16 @@ It mainly consists of interface-printing functions and interface-navigating code
 Interface-printing functions are divided into different blocks for easy pick and combining in building a new page.
 Most operations are saved in and called from xxxOpt.py files, named according to their respective page.
 
-Every supposedly - print() function is modified and replaced with printMod() for indentation purposes.
-All {ind} too, found after \n are for indentation purposes only. They can be found in other files.
-Interface indentation can be updated in options.py
+from options.py import *:
+1. Imports prompt()
+2. Every supposedly - print() function is modified and replaced with printMod() for indentation purposes.
+3. All {ind} too, found after \n are for indentation purposes only.
 
 '''
-##Essential module dumps
+
 from os import system
 from datetime import datetime
+
 from options import *
 import ingOpt
 import recOpt
@@ -22,28 +24,26 @@ import mrpOpt
 import filehand
 
 ##Check and regenerate file if missing
-#Inventory
-newIngredientFile=False
-if filehand.exist("ing.txt") != True:
-    filehand.write("ing.txt","")
-    newIngredientFile=True #Report to Inventory page if the file was missing and regenerated
+newInventoryFile=False
+if not filehand.exist("inv.txt"):
+    filehand.write("inv.txt","")
+    #Report to Inventory page if the file was regenerated
+    newInventoryFile=True 
 
-#Recipe
 newRecipeFile=False
-if filehand.exist("rec.txt") != True:
+if not filehand.exist("rec.txt"):
     filehand.write("rec.txt","")
-    newRecipeFile=True #Report to Recipes page if the file was missing and regenerated
+    #Report to Recipes page if the file was regenerated
+    newRecipeFile=True 
 
-#Recipe Descriptions
-if filehand.exist("recDesc.txt") != True:
+if not filehand.exist("recDesc.txt"):
     filehand.write("recDesc.txt","")
 
-#Orders
-if filehand.exist("orders.txt") != True:
+if not filehand.exist("orders.txt"):
     filehand.write("orders.txt","")
 
 ##Interface blocks definition
-def header(clear=False): #Called first for every page to clear screen (if clear==True), then print date, time, and bakery name.
+def header(clear): #Called first for every page to clear screen, then print date, time, and bakery name.
     if clear==True:
         system('cls')
     print('')
@@ -59,14 +59,14 @@ def mainMenu(): #Main menu page block
 
 def pageInventory(): #Inventory menu page block
     printMod(f"{'Inventory':^80}")
-    global newIngredientFile
-    if newIngredientFile==True:
-        printMod(f"{'Could not find ing.txt ... A new file was created.':^80}")
-        newIngredientFile=False
+    global newInventoryFile
+    if newInventoryFile==True:
+        printMod(f"{'Could not find inv.txt ... A new file was created.':^80}")
+        newInventoryFile=False
     printMod("="*80)
 
-    #Read and print ingredients list from ing.txt
-    ingListCurrent=filehand.read("ing.txt")
+    #Read and print ingredients list from inv.txt
+    ingListCurrent=filehand.read("inv.txt")
     if ingListCurrent:
         printMod(f"{'Item:':^26}{' Amount:':^24}")
         printMod('-'*80)
@@ -88,9 +88,11 @@ def pageRecipe(): #Recipe page block
     printMod('='*80)
 
     #Read from rec.txt
-    for elem in recOpt.getRecipeList():        
+    for recipe in recOpt.getRecipeList():        
         #And print recipe list
-        printMod(f"{recOpt.getRecipeList().index(elem)+1}. {elem:<20} - {recOpt.getRecDesc(elem):<25}")
+        index=recOpt.getRecipeList().index(recipe)+1
+        desc=recOpt.getRecDesc(recipe)
+        printMod(f"{index}. {recipe:<20} - {desc:<25}")
 
     printMod("="*80)
     printMod("[A]dd [D]elete [R]ename [V]iew [B]ack")
@@ -129,21 +131,24 @@ def pageOrder(toggleRecipes): #Orders page block
     if toggleRecipes:
         printMod("Recipes available:")
         #Read from rec.txt
-        for elem in recOpt.getRecipeList():
-            
+        for elem in recOpt.getRecipeList():            
             #And print recipe list
             printMod(f"{recOpt.getRecipeList().index(elem)+1}. {elem:<26}")
         printMod('-'*80)
-        printMod('')
+        print('')
 
     printMod(f"{'Current Orders':^80}")
     printMod('='*80)
     if not ordOpt.getOrderList():
         printMod(f"{'No orders yet':^80}")
     for counter in range(0,len(ordOpt.getOrderList()),2):
-        printMod(f"{int(counter/2+1)}. {ordOpt.getOrderList()[counter]:<17} - {recOpt.getRecDesc(ordOpt.getOrderList()[counter]):<23}* {ordOpt.getOrderList()[counter+1]:<8}")
+        index=int(counter/2+1)
+        order=ordOpt.getOrderList()[counter]
+        desc=recOpt.getRecDesc(ordOpt.getOrderList()[counter])
+        amt=ordOpt.getOrderList()[counter+1]
+        printMod(f"{index}. {order:<17} - {desc:<23}* {amt:<8}")
 
-    printMod("")
+    print('')
     printMod("="*80)
     printMod(f"[A]dd [D]elete [E]dit [B]ack \n{ind}[T]oggle recipes [R]eset orders")
     printMod("="*80)
@@ -159,8 +164,12 @@ def pageMRP1(): #1st half of MRP page block
         #Print orders planned
         printMod("Orders planned >>>")
         for counter in range(0,len(ordOpt.getOrderList()),2):
-            printMod(f"{int(counter/2+1)}. {ordOpt.getOrderList()[counter]:<17} - {recOpt.getRecDesc(ordOpt.getOrderList()[counter]):<23}* {ordOpt.getOrderList()[counter+1]:<8}")
-        printMod('')
+            index=int(counter/2+1)
+            order=ordOpt.getOrderList()[counter]
+            desc=recOpt.getRecDesc(ordOpt.getOrderList()[counter])
+            amt=ordOpt.getOrderList()[counter+1]
+            printMod(f"{index}. {order:<17} - {desc:<23}* {amt:<8}")
+        print('')
         
         #Print ingredients and their shortfalls
         printMod('Ingredients required >>>')
@@ -171,9 +180,9 @@ def pageMRP1(): #1st half of MRP page block
         for elem in planList:
             printMod(f"{elem[0]:<17}{elem[1]:>18}{elem[2]:>18}{elem[3]:>19}{elem[4]:>2}")
         
-        printMod(f"")
+        print('')
 
-    printMod("-"*80)
+    printMod("="*80)
 
 def pageMRP2(): #2nd half of MRP page block. Separated to not be included when printing to MRP txt file
     if ordOpt.getOrderList():
@@ -205,20 +214,20 @@ while True:
                 break
 
             if option == "A": #Add ingredient
-                ingOpt.add(filehand.read("ing.txt"),"ing.txt")
+                ingOpt.add(filehand.read("inv.txt"),"inv.txt")
 
             if option == "D": #Delete ingredient
-                ingOpt.delete(filehand.read("ing.txt"),"ing.txt")
+                ingOpt.delete(filehand.read("inv.txt"),"inv.txt")
 
             if option == "E": #Edit existing ingredient
-                ingOpt.edit(filehand.read("ing.txt"),"ing.txt")
+                ingOpt.edit(filehand.read("inv.txt"),"inv.txt")
 
     ##RecipesPage
     if option == "R":
         while True:
             header(True)
             pageRecipe()
-            option=(prompt("Option  >>","ABDEVR")) #Options prompt with input range A, B, D, E, V, R
+            option=(prompt("Option  >>","BVRADE")) #Options prompt with input range B, V, R, A, D, E
 
             if option == "B": #Back
                 break
@@ -228,7 +237,7 @@ while True:
                 while vCancel==False:
                     
                     #Options prompt with input range [number of recipes] and C; choose recipe by number to view its ingredients
-                    option=prompt("Select recipe no.: ",recOpt.getRecipeOptions())
+                    option=prompt(f"{'Select recipe no.':<20}[C]ancel: ",recOpt.getRecipeOptions())
                     if option == "C": #Cancel recipe selection
                         vCancel=True
                     
@@ -237,6 +246,7 @@ while True:
                         while True:
                             header(True)
                             currentRecipeName=pageRecIngredients(int(option)-1)
+                            recIngList=recOpt.getRecIngredients(currentRecipeName)
                             optionRecIng=(prompt("Option  >>","ADEB")) #Options prompt with input range A, D, E, B
 
                             if optionRecIng == "B": #Back, and cancel previous prompt for selecting V
@@ -244,19 +254,19 @@ while True:
                                 break
 
                             if optionRecIng == "A": #Add ingredient
-                                addedIng=ingOpt.add(recOpt.getRecIngredients(currentRecipeName),"rec.txt")
+                                addedIng=ingOpt.add(recIngList,"rec.txt")
 
                                 if addedIng: #Confirm add ingredient if list returned is not empty
                                     recOpt.rewriteRecipe(currentRecipeName,addedIng)
 
                             if optionRecIng == "D": #Delete ingredient
-                                deletedIng=ingOpt.delete(recOpt.getRecIngredients(currentRecipeName),"rec.txt")
+                                deletedIng=ingOpt.delete(recIngList,"rec.txt")
 
                                 if deletedIng: #Confirm delete ingredient if list returned is not empty
                                     recOpt.rewriteRecipe(currentRecipeName,deletedIng)
 
                             if optionRecIng == "E": #Edit ingredient
-                                editedIng=ingOpt.edit(recOpt.getRecIngredients(currentRecipeName),"rec.txt")
+                                editedIng=ingOpt.edit(recIngList,"rec.txt")
 
                                 if editedIng: #Confirm edit ingredient if list returned is not empty
                                     recOpt.rewriteRecipe(currentRecipeName,editedIng)
