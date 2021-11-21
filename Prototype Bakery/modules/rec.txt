@@ -1,0 +1,3 @@
+Bread1 Flour g 423 Yeast g 2 Salt g 2
+Muffin1 Butter g 90 Flour g 400 Baking_Soda mg 80
+Hotdog Sugar mg 60 Butter g 40 Milk g 400 Yeast g 25 Salt g 20

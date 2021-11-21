@@ -1,6 +1,0 @@
-Bread1
-2
-Hotdog
-11
-Muffin1
-100
