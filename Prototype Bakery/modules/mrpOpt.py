@@ -12,7 +12,6 @@ import modules.recOpt as recOpt
 import modules.ordOpt as ordOpt
 from modules.options import unitConversion,inputMod,printMod
 
-
 # Ingredients requirement algorithm (1 function)
 # Returns 2D list containing required ingredients, stock, demand, and shortfall
 def ingReqList():  

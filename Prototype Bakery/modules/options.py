@@ -33,7 +33,7 @@ def prompt(prompt,inputRange):
 
     # Input and validation stage
     while True:
-        opt=str(input(ind+prompt)).upper()
+        opt=str(inputMod(prompt)).upper()
         if opt not in range:
             printMod(f"Invalid option! Accepted: {', '.join(range)}")
         else:

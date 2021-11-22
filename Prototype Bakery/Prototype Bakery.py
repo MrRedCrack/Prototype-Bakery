@@ -10,7 +10,7 @@
     named according to their respective page.
 
     Note (to avoid confusion):
-    from options.py import *:
+    from modules.options import *:
     1. Imports prompt() for interface navigation.
     2. print() functions are modified into printMod() for indentation.
     3. ^similar to input() into inputMod()
@@ -196,7 +196,7 @@ def menuInv():
     while True:
         header(True)
         pageInventory()
-        option=(prompt("Option  >>","adeb")) 
+        option=prompt("Option  >>","adeb")
 
         if option == "B": # Back
             break
@@ -216,7 +216,7 @@ def menuRecIng():
         # Options prompt with input range [number of recipes] and C; 
         # choose recipe by number to view ingredients
         option=prompt(f"{'Select recipe no.':<20}[C]ancel: ",
-                        recOpt.getRecipeOptions())
+                      recOpt.getRecipeOptions())
         if option == "C": # Cancel recipe selection
             break
         
@@ -322,7 +322,7 @@ while True:
     header(True)
     pageMain()
     # Options prompt with input range I, R, O, M, Q
-    option=(prompt("Option  >>","iromq")) 
+    option=prompt("Option  >>","iromq") 
     
     if option == "Q": # Quit program
         break
