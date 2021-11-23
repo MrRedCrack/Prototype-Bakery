@@ -1,5 +1,5 @@
-Sugar kg 40
 Butter kg 45
 Flour g 234
 Salt kg 10000
+Sugar kg 40
 Yeast g 40
