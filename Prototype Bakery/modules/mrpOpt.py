@@ -92,7 +92,8 @@ def ingReqList():
         
         # Append every element above as a list into 2D list
         reqList.append([ingName,stockAmount,demandAmount,shortfallAmount,unit])
-    return sorted(reqList,key=lambda x:x[0])
+    reqList.sort(key=lambda x:x[0])
+    return reqList
 
 # Save to file function
 def save(function):
