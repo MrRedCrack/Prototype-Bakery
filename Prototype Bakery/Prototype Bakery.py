@@ -19,6 +19,7 @@
     ================================================================================
 '''
 
+from os import system
 from datetime import datetime
 
 from modules.options import *
@@ -49,7 +50,7 @@ Interface blocks
 # Called first for every page to clear screen, then print header
 def header(clear): 
     if clear==True:
-        print("\033[H\033[J")
+        system('cls')
     print('')
     printMod(f"{datetime.today().strftime('%Y-%m-%d - %H:%M:%S'):^80}")
     printMod(f"{'Prototype Bakery':^80}")
