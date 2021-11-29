@@ -27,9 +27,9 @@ def prompt(prompt,inputRange):
     # Initialize range
     if isinstance(inputRange,list):
         range=inputRange
-    if isinstance(inputRange,str): 
+    if isinstance(inputRange,str):
         # Split string into individual capitalized letters as list
-        range=[char for char in str(inputRange).upper()]
+        range=list(str(inputRange).upper())
 
     # Input and validation stage
     while True:
@@ -38,11 +38,11 @@ def prompt(prompt,inputRange):
             printMod(f"Invalid option! Accepted: {', '.join(range)}")
         else:
             break
-    
+
     return opt
 
 # Convert injected amount to targetUnit
-def unitConversion(amount,amountUnit,targetUnit): 
+def unitConversion(amount,amountUnit,targetUnit):
     if targetUnit=="g":
         if amountUnit=="kg":
             amount=float(amount)*1000

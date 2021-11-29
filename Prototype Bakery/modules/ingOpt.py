@@ -35,13 +35,13 @@ def dup(itemName,ingListCurrent,arg):
 Operational functions
 -----------------------------------------------------------------------------'''
 # Add ingredient
-def add(ingListCurrent,targetFile): 
+def add(ingListCurrent,targetFile):
     cancel=False
-    
+
     # Item name input and validation stage
     while True:
         err=""
-        itemName=str.title(inputMod(f"{'Ingredient name':<20}[C]ancel: "))    
+        itemName=str.title(inputMod(f"{'Ingredient name':<20}[C]ancel: "))
         if itemName.upper() != "C":
             if dup(itemName,ingListCurrent,'check'):
                 err=Err['itemDuplicate']
@@ -49,17 +49,17 @@ def add(ingListCurrent,targetFile):
                 err=Err['nameLength']
             if " " in itemName:
                 err=Err['nameSpace']
-        
+
             if err:
                 printMod(err)
             else:
                 break
         else:
             cancel=True
-            break       
-    
+            break
+
     if not cancel:
-       
+
         # Item unit input and validation stage
         while True:
             err=""
@@ -67,7 +67,7 @@ def add(ingListCurrent,targetFile):
             if itemUnit.upper() != "C":
                 if itemUnit not in ["g","kg","mg"]:
                     err=Err['unit']
-                
+
                 if err:
                     printMod(err)
                 else:
@@ -75,9 +75,9 @@ def add(ingListCurrent,targetFile):
             else:
                 cancel=True
                 break
-        
+
     if not cancel:
-        
+
         # Item amount input and validation stage
         while True:
             err=""
@@ -91,7 +91,7 @@ def add(ingListCurrent,targetFile):
                         err=Err['amountSmall']
                 except:
                     err=Err['invalidNo']
-                            
+
                 if err:
                     printMod(err)
                 else:
@@ -99,9 +99,9 @@ def add(ingListCurrent,targetFile):
             else:
                 cancel=True
                 break
-        
+
     if not cancel:
-        
+
         # Final actions depending on targetFile
         if targetFile == "inv.txt":
             ingListCurrent.append(f"{itemName} {itemUnit} {itemAmount}\n")
@@ -115,9 +115,9 @@ def add(ingListCurrent,targetFile):
         return []
 
 # Delete ingredient
-def delete(ingListCurrent,targetFile): 
+def delete(ingListCurrent,targetFile):
     cancel=False
-    
+
     # Item name input and validation stage
     while True:
         err=""
@@ -125,17 +125,17 @@ def delete(ingListCurrent,targetFile):
         if itemName.upper() != "C":
             if not dup(itemName,ingListCurrent,'check'):
                 err=Err['noSuchName']
-        
+
             if err:
                 printMod(err)
             else:
                 break
         else:
             cancel=True
-            break 
-    
+            break
+
     if not cancel:
-        
+
         # Delete ingredient from ingListCurrent
         indexer=dup(itemName,ingListCurrent,'list')
         for items in indexer:
@@ -149,32 +149,32 @@ def delete(ingListCurrent,targetFile):
             if not ingListCurrent:
                 ingListCurrent.append("")
             return ingListCurrent
-        
+
     else:
         return []
 
 # Edit ingredient unit and amount
-def edit(ingListCurrent,targetFile): 
-    cancel=False       
-    
+def edit(ingListCurrent,targetFile):
+    cancel=False
+
     # Item name input and validation stage
     while True:
         err=""
-        itemName=str.title(inputMod(f"{'Ingredient name':<20}[C]ancel: "))    
+        itemName=str.title(inputMod(f"{'Ingredient name':<20}[C]ancel: "))
         if itemName.upper() != "C":
             if not dup(itemName,ingListCurrent,'check'):
                 err=Err['noSuchName']
-        
+
             if err:
                 printMod(err)
             else:
                 break
         else:
             cancel=True
-            break 
-    
+            break
+
     if not cancel:
-        
+
         # Item unit input and validation stage
         while True:
             err=""
@@ -182,7 +182,7 @@ def edit(ingListCurrent,targetFile):
             if itemUnit.upper() != "C":
                 if itemUnit not in ["g","kg","mg"]:
                     err=Err['unit']
-                
+
                 if err:
                     printMod(err)
                 else:
@@ -190,10 +190,10 @@ def edit(ingListCurrent,targetFile):
             else:
                 cancel=True
                 break
-        
+
     if not cancel:
 
-        # Item amount input and validation stage        
+        # Item amount input and validation stage
         while True:
             err=""
             itemAmount=inputMod(f"{'Amount':<20}[C]ancel: ")
@@ -206,7 +206,7 @@ def edit(ingListCurrent,targetFile):
                         err=Err['amountSmall']
                 except:
                     err=Err['invalidNo']
-                            
+
                 if err:
                     printMod(err)
                 else:
@@ -214,9 +214,9 @@ def edit(ingListCurrent,targetFile):
             else:
                 cancel=True
                 break
-        
+
     if not cancel:
-        
+
         # Edit ingListCurrent with new unit and amount
         indexer=dup(itemName,ingListCurrent,'list')
         for items in indexer:
@@ -227,7 +227,7 @@ def edit(ingListCurrent,targetFile):
                     ingListCurrent.insert(index,f"{itemName} {itemUnit} {itemAmount}\n")
                 if targetFile == "rec.txt":
                     ingListCurrent.insert(index,f"{itemName} {itemUnit} {itemAmount}")
-        
+
         # Final actions depending on targetFile
         if targetFile == "inv.txt":
             filehand.write("inv.txt",f"{''.join(sorted(ingListCurrent))}")
@@ -235,4 +235,3 @@ def edit(ingListCurrent,targetFile):
             return sorted(ingListCurrent)
     else:
         return []
-    

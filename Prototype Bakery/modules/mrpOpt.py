@@ -14,15 +14,15 @@ from modules.options import unitConversion,inputMod,printMod
 
 # Ingredients requirement algorithm (1 function)
 # Returns 2D list containing required ingredients, stock, demand, and shortfall
-def ingReqList():  
+def ingReqList():
     # Get inventory as ingList
     invListRaw=filehand.read("inv.txt")
     invList=[]
     for items in invListRaw:
         item=items.strip("\n").split(' ')
         invList.extend(item)
-    
-    # Get recipe ingredients according to orders into recIngList: 
+
+    # Get recipe ingredients according to orders into recIngList:
     # 'Ingredient name', 'unit', 'amount', 'multiplier' appended per ingredient
     recIngList=[]
     orders=ordOpt.getOrderList()
@@ -36,7 +36,7 @@ def ingReqList():
                 recIngList.extend(ingredients)
                 recIngList.append(multiplier)
 
-    # Condense recIngList into: 'Ingredient name', 'amount' per ingredient, 
+    # Condense recIngList into: 'Ingredient name', 'amount' per ingredient,
     # while combining duplicate ingredients from different recipes
     condensedRecIngList=[] 
     for i in range(0,len(recIngList),4):
@@ -58,12 +58,12 @@ def ingReqList():
             condensedRecIngList.insert(itemIndex+1,f"{total:.2f}")
 
     # Final compilation
-    reqList=[] 
+    reqList=[]
     for i in range(0,len(condensedRecIngList),2):
-        
+
         # Ingredient name
         ingName=condensedRecIngList[i]
-        
+
         # Stock amount
         stockAmount='0'
         if ingName in invList:
@@ -72,7 +72,7 @@ def ingReqList():
             unit=invList[ingIndex+1]
             amountInGrams=unitConversion(amount,unit,'g')
             stockAmount=f"{amountInGrams:.2f}"
-        
+
         # Demand amount
         demandAmount=condensedRecIngList[i+1]
 
@@ -89,21 +89,21 @@ def ingReqList():
         unit=''
         if shortfallAmount != 'N/A':
             unit='g'
-        
+
         # Append every element above as a list into 2D list
         reqList.append([ingName,stockAmount,demandAmount,shortfallAmount,unit])
     reqList.sort(key=lambda x:x[0])
     return reqList
 
 # Save to file function
-def save(function):
+def save(*funcs):
     # Folder/directory name, can edit here
     dirName="Saved Documents" 
     if not filehand.exist(dirName,'main'):
         filehand.mkFolder(dirName,'main')
     # Text file name, can edit here
     fileName=f"MRP {datetime.today().strftime('%Y-%m-%d %H-%M-%S')}.txt"
-    if not filehand.exist(f"{dirName}\\{fileName}",'main'): #Edge case
-        filehand.printFile(f"{dirName}\\{fileName}",function,'main')
+    if not filehand.exist(f"{dirName}\\{fileName}",'main'): # Edge case: Saving too fast
+        filehand.printFile(f"{dirName}\\{fileName}",funcs,'main')
         printMod(f"Saved as '{fileName}' in folder '{dirName}'")
         inputMod(f"Press Enter to continue.")

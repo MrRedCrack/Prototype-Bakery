@@ -21,6 +21,7 @@
 
 from os import system
 from datetime import datetime
+from functools import partial
 
 from modules.options import *
 import modules.ingOpt as ingOpt
@@ -30,7 +31,7 @@ import modules.mrpOpt as mrpOpt
 import modules.filehand as filehand
 
 # Check and regenerate file if missing
-newInv,newRec,newDesc,newOrd=['']*4 #Error keys
+newInv,newRec,newDesc,newOrd=['']*4 # Error keys
 if not filehand.exist("inv.txt"):
     filehand.write("inv.txt","")
     newInv='missingInv'
@@ -48,8 +49,8 @@ if not filehand.exist("orders.txt"):
 Interface blocks
 ----------------------------------------------------------------------'''
 # Called first for every page to clear screen, then print header
-def header(clear): 
-    if clear==True:
+def header(clear):
+    if clear:
         system('cls')
     print('')
     printMod(f"{datetime.today().strftime('%Y-%m-%d - %H:%M:%S'):^80}")
@@ -57,8 +58,7 @@ def header(clear):
     printMod(f"{'='*80}")
 
 # Main menu
-def pageMain(): 
-    global newInv,newRec,newDesc,newOrd
+def pageMain():
     errKey=[newInv,newRec,newDesc,newOrd]
     if any(errKey):
         printMod(f"{'File(s) missing:':^80}")
@@ -84,7 +84,7 @@ def pageIngredients(ingListCurrent):
         for elem in ingListCurrent:
             item=elem.strip("\n").split()
             ing,amt,unit=item[0],float(item[2]),item[1]
-            printMod(f"{ing:<23}--{amt:>24.2f} {unit}")   
+            printMod(f"{ing:<23}--{amt:>24.2f} {unit}")
     else:
         printMod(f"{'no ingredients':^80}")
     printMod("="*80)
@@ -92,7 +92,7 @@ def pageIngredients(ingListCurrent):
     printMod("="*80)
 
 # Inventory
-def pageInventory(): 
+def pageInventory():
     printMod(f"{'Inventory':^80}")
     printMod("="*80)
     pageIngredients(filehand.read("inv.txt"))
@@ -110,7 +110,7 @@ def pageRecipe():
     printMod("="*80)
 
 # Recipe ingredients
-def pageRecIngredients(recipeNum): 
+def pageRecIngredients(recipeNum):
     recipeName=recOpt.getRecipeList()[recipeNum]
     text=f"Ingredients for {recipeName}"
     printMod(f"{text:^80}")
@@ -123,7 +123,7 @@ def pageRecIngredients(recipeNum):
     return recipeName
 
 # Orders
-def pageOrder(toggleRecipes): 
+def pageOrder(toggleRecipes):
     # Toggleable recipes
     if toggleRecipes:
         printMod("Recipes available:")
@@ -151,7 +151,7 @@ def pageOrder(toggleRecipes):
     printMod("="*80)
 
 # 1st half of MRP
-def pageMRP1(): 
+def pageMRP1():
     printMod(f"{'Material Requirements Plan':^80}")
     printMod("="*80)
     if not ordOpt.getOrderList():
@@ -166,7 +166,7 @@ def pageMRP1():
             amount=ordOpt.getOrderList()[i+1]
             printMod(f"{index}. {order:<17} - {desc:<23}* {amount:<8}")
         print('')
-        
+
         # Print ingredients and their shortfalls
         printMod('Ingredients required >>>')
         printMod('-'*80)
@@ -180,7 +180,7 @@ def pageMRP1():
     printMod("="*80)
 
 # 2nd half of MRP. Separated to exclude from saved file
-def pageMRP2(): 
+def pageMRP2():
     if ordOpt.getOrderList():
         printMod("[S]ave to file  [B]ack")
         printMod("="*80)
@@ -212,14 +212,14 @@ def menuInv():
 
 # Recipe ingredients menu
 def menuRecIng():
-    while True:      
-        # Options prompt with input range [number of recipes] and C; 
+    while True:
+        # Options prompt with input range [number of recipes] and C;
         # choose recipe by number to view ingredients
         option=prompt(f"{'Select recipe no.':<20}[C]ancel: ",
                       recOpt.getRecipeOptions())
         if option == "C": # Cancel recipe selection
             break
-        
+
         else:
             # Recipe ingredients page
             option=int(option)-1
@@ -270,19 +270,19 @@ def menuRec():
 def menuOrd():
     toggleRecipes=True
     while True:
-        header(True)            
+        header(True)
         pageOrder(toggleRecipes)
         option=prompt("Option  >>","adebtr")
 
         if option == "B": # Back
             break
-        
+
         elif option == "T": # Toggle "Available recipes" view
             toggleRecipes= not toggleRecipes
-        
+
         elif option == "A": # Add order from existing recipe:
             ordOpt.add()
-        
+
         elif option == "D": # Delete order
             ordOpt.delete()
 
@@ -294,14 +294,14 @@ def menuOrd():
 
 # MRP menu
 def menuMRP():
-    while True:            
+    while True:
         header(True)
         pageMRP1()
         pageMRP2()
-        if not ordOpt.getOrderList(): # Remove the Save option if no orders were made
-            addS=''
-        else:
+        if ordOpt.getOrderList():
             addS='s'
+        else: # Remove the Save option if no orders were made
+            addS=''
         option=prompt("Option  >>",f"{addS}b")
 
         # Back to menu
@@ -309,10 +309,7 @@ def menuMRP():
             break
 
         elif option == "S": # Save to file
-            def printMRP(): # Compile required functions to print into .txt file
-                header(False)
-                pageMRP1()
-            mrpOpt.save(printMRP)
+            mrpOpt.save(partial(header,False),pageMRP1)
 
 '''
 main()
@@ -322,8 +319,8 @@ while True:
     header(True)
     pageMain()
     # Options prompt with input range I, R, O, M, Q
-    option=prompt("Option  >>","iromq") 
-    
+    option=prompt("Option  >>","iromq")
+
     if option == "Q": # Quit program
         break
 

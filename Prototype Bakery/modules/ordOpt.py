@@ -18,15 +18,15 @@ import modules.filehand as filehand
 from modules.options import *
 from modules.recOpt import getRecipeOptions, getRecipeList
 
-# Returns a list of ['1','2','3',..,'C'] 
+# Returns a list of ['1','2','3',..,'C']
 # depending on number of orders in orders.txt
 def getOrderOptions(): 
-    ordersNo=int(len(getOrderList())/2)
+    ordersNo=len(getOrderList())//2
     numList=[f"{num+1}" for num in range(ordersNo)]
     numList.append("C")
     return numList
 
-# Returns a list after reading orders.txt; 
+# Returns a list after reading orders.txt;
 # 'OrderName', 'OrderAmount' appended per order to orderList
 def getOrderList(): 
     orderListRaw=filehand.read("orders.txt")
@@ -40,7 +40,7 @@ def getOrderList():
 Operational functions
 ---------------------------------------------------------------------------------'''
 # Add order
-def add(): 
+def add():
     # Options prompt with input range [number of orders] and C
     select=prompt(f"{'Select recipe no.':<20}[C]ancel: ",getRecipeOptions())
 
@@ -90,7 +90,7 @@ def add():
             filehand.writelines("orders.txt",newOrderListRaw)
 
 # Delete order
-def delete(): 
+def delete():
     select=prompt(f"{'Select order no.':<20}[C]ancel: ",getOrderOptions())
 
     if select != "C":
@@ -102,7 +102,7 @@ def delete():
         filehand.writelines("orders.txt",newOrderListRaw)
 
 # Edit order amount
-def edit(): 
+def edit():
     select=prompt(f"{'Select order no.':<20}[C]ancel: ",getOrderOptions())
 
     if select != "C":
@@ -112,7 +112,7 @@ def edit():
         while True:
             err=""
             editedAmount=inputMod(f"{'Edit amount':<20}[C]ancel: ")
-            try:            
+            try:
                 if int(editedAmount) > 1000 or int(editedAmount) <= 0:
                     err=Err['orderLimit']
             except:
@@ -128,7 +128,7 @@ def edit():
                 else:
                     break
 
-        if not cancel:   
+        if not cancel:
 
             newOrderListRaw=getOrderList()
             orderAmtIndex=select*2+1
@@ -138,7 +138,7 @@ def edit():
             filehand.writelines("orders.txt",newOrderListRaw)
 
 # Clear orders
-def reset(): 
-    confirm=prompt("Are you sure? [Y]es [C]ancel: ","YC")
+def reset():
+    confirm=prompt("Are you sure? [Y]es [C]ancel: ","yc")
     if confirm != "C":
         filehand.write("orders.txt","")
