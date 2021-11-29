@@ -8,14 +8,6 @@
     Interface-printing functions are divided into blocks for easy pick and choose.
     Most operations are saved in and called from xxxOpt.py files, 
     named according to their respective page.
-
-    Note (to avoid confusion):
-    from modules.options import *:
-    1. Imports prompt() for interface navigation.
-    2. print() functions are modified into printMod() for indentation.
-    3. ^similar to input() into inputMod()
-    3. All {ind} too, found after '\n's are imported for indentation.
-    4. Imports error dictionary, Err
     ================================================================================
 '''
 

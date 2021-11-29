@@ -24,10 +24,9 @@ def exist(path,arg=None):
     return exist
 
 # Create or rewrite .txt with text
-def write(path,text,arg=None): 
-    handler=open(f"{loc(arg)}{path}",'w')
-    handler.write(text)
-    handler.close()
+def write(path,text,arg=None):
+    with open(f"{loc(arg)}{path}",'w') as file:
+        file.write(text)
 
 # Inject each string with "\n" in list, then rewrites .txt with the lines
 def writelines(path,list):
