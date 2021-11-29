@@ -47,9 +47,8 @@ def updateRecipes(recipeList):
 
 # Append text to .txt
 def append(path,text):
-    handler=open(f"{loc()}{path}","a")
-    handler.write(text)
-    handler.close()
+    with open(f"{loc()}{path}",'a') as file:
+        file.write(text)
 
 # Return raw list of .txt lines as strings with "\n"
 def read(path):
