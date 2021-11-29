@@ -23,7 +23,7 @@ from os import system
 from datetime import datetime
 from functools import partial
 
-from modules.options import *
+from modules.options import prompt,printMod,Err
 import modules.ingOpt as ingOpt
 import modules.recOpt as recOpt
 import modules.ordOpt as ordOpt

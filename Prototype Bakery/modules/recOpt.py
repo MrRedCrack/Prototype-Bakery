@@ -18,7 +18,7 @@
 '''
 
 import modules.filehand as filehand
-from modules.options import *
+from modules.options import prompt,printMod,inputMod,ind,Err
 import modules.ingOpt as ingOpt
 
 # Returns a list after reading orders.txt;

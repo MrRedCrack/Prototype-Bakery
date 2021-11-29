@@ -16,7 +16,7 @@
 '''
 
 import modules.filehand as filehand
-from modules.options import *
+from modules.options import printMod,inputMod,unitConversion,Err
 
 # Name duplicate check
 def dup(itemName,ingListCurrent,arg):

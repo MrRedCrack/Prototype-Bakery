@@ -65,9 +65,9 @@ def mkFolder(directoryName,arg=None):
 
 # Prints function() into .txt
 def printFile(path,funcs,arg=None):
-    original_stdout=sys.stdout
+    original=sys.stdout
     with open(f"{loc(arg)}{path}",'w') as file:
-        sys.stdout = file
+        sys.stdout=file
         for f in funcs:
             f()
-        sys.stdout = original_stdout
+        sys.stdout=original

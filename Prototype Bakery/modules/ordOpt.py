@@ -15,7 +15,7 @@
 '''
 
 import modules.filehand as filehand
-from modules.options import *
+from modules.options import prompt,printMod,inputMod,Err
 from modules.recOpt import getRecipeOptions, getRecipeList
 
 # Returns a list of ['1','2','3',..,'C']
