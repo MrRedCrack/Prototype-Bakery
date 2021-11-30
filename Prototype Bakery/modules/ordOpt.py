@@ -81,9 +81,8 @@ def add():
 
             newOrderListRaw=getOrderList()
             # Update existing order amount
-            if orderExists:              
-                del newOrderListRaw[orderAmtIndex]
-                newOrderListRaw.insert(orderAmtIndex,str(total))
+            if orderExists:
+                newOrderListRaw[orderAmtIndex]=str(total)
             else: # Append to order list
                 newOrderListRaw.append(getRecipeList()[select])
                 newOrderListRaw.append(addedAmount)
@@ -133,8 +132,7 @@ def edit():
             newOrderListRaw=getOrderList()
             orderAmtIndex=select*2+1
             # Edit order amount
-            del newOrderListRaw[orderAmtIndex]
-            newOrderListRaw.insert(orderAmtIndex,editedAmount)
+            newOrderListRaw[orderAmtIndex]=editedAmount
             filehand.writelines("orders.txt",newOrderListRaw)
 
 # Clear orders

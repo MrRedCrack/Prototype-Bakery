@@ -112,8 +112,7 @@ def rewriteRecIng(currentRecipeName,action):
         # Replace ingredient list for selected recipe
         recipeList=getRecipeListRaw()
         ingredientsIndex=recipeList.index(currentRecipeName)+1
-        del recipeList[ingredientsIndex]
-        recipeList.insert(ingredientsIndex,ingRewrite)
+        recipeList[ingredientsIndex]=ingRewrite
         filehand.updateRecipes(recipeList)
         # Rewrite rec.txt with new recipeList
 
@@ -151,22 +150,19 @@ def rename():
             descListRaw=getRecDescListRaw()
             if selectedRec in descListRaw:
                 descIndex=descListRaw.index(selectedRec)
-                del descListRaw[descIndex]
-                descListRaw.insert(descIndex,newName)
+                descListRaw[descIndex]=newName
                 filehand.writelines("recDesc.txt",descListRaw)
 
             # Rename recipe in orders.txt
             orderListRaw=getOrderList()
             if selectedRec in orderListRaw:
                 orderIndex=orderListRaw.index(selectedRec)
-                del orderListRaw[orderIndex]
-                orderListRaw.insert(orderIndex,newName)
+                orderListRaw[orderIndex]=newName
                 filehand.writelines("orders.txt",orderListRaw)
 
             # Rename recipe in rec.txt
             recipeList=getRecipeListRaw()
-            del recipeList[select*2]
-            recipeList.insert(select*2,newName)
+            recipeList[select*2]=newName
             filehand.updateRecipes(recipeList)
 
 # Add recipe
@@ -259,8 +255,7 @@ def description():
 
                 # Rewrite description if not blank
                 else:
-                    del newDescListRaw[descIndex+1]
-                    newDescListRaw.insert(descIndex+1,newDesc)
+                    newDescListRaw[descIndex+1]=newDesc
 
             # Append non-blank recipe description if didn't exist in recDesc.txt
             elif newDesc:

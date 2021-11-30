@@ -54,8 +54,7 @@ def ingReqList():
             itemIndex=condensedRecIngList.index(ingredientName)
             oldAmount=float(condensedRecIngList[itemIndex+1])
             total=amountInGrams+oldAmount
-            del condensedRecIngList[itemIndex+1]
-            condensedRecIngList.insert(itemIndex+1,f"{total:.2f}")
+            condensedRecIngList[itemIndex+1]=f"{total:.2f}"
 
     # Final compilation
     reqList=[]
