@@ -86,7 +86,7 @@ def ingReqList():
 
         # Standard unit: g if there is shortfall, otherwise append blank element as unit
         unit=''
-        if shortfallAmount != 'N/A':
+        if shortfallAmount!='N/A':
             unit='g'
 
         # Append every element above as a list into 2D list

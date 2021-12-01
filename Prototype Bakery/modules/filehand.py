@@ -52,10 +52,8 @@ def append(path,text):
 
 # Return raw list of .txt lines as strings with "\n"
 def read(path):
-    handler=open(f"{loc()}{path}",'r')
-    data=handler.readlines()
-    handler.close()
-    return data
+    with open(f"{loc()}{path}",'r') as file:
+        return file.readlines()
 
 # Create a directory/folder
 def mkFolder(directoryName,arg=None): 
