@@ -27,9 +27,9 @@ def prompt(prompt,inputRange):
     # Initialize range
     if isinstance(inputRange,list):
         range=inputRange
-    if isinstance(inputRange,str):
+    elif isinstance(inputRange,str):
         # Split string into individual capitalized letters as list
-        range=list(str(inputRange).upper())
+        range=list(inputRange.upper())
 
     # Input and validation stage
     while True:
@@ -46,7 +46,7 @@ def unitConversion(amount,amountUnit,targetUnit):
     if targetUnit=="g":
         if amountUnit=="kg":
             amount=float(amount)*1000
-        if amountUnit=="mg":
+        elif amountUnit=="mg":
             amount=float(amount)/1000
     return float(amount)
 

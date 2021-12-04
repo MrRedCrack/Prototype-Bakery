@@ -33,7 +33,7 @@ def writelines(path,list):
     linesList=[]
     for elem in list:
         linesList.append(elem+"\n")
-    write(path,f"{''.join(linesList)}")
+    write(path,"".join(linesList))
 
 # Special rewrite function for rec.txt
 def updateRecipes(recipeList):
@@ -59,7 +59,7 @@ def read(path):
 def mkFolder(directoryName,arg=None): 
     mkdir(f"{loc(arg)}{directoryName}")
 
-# Prints function() into .txt
+# Prints f() into .txt
 def printFile(path,funcs,arg=None):
     original=sys.stdout
     with open(f"{loc(arg)}{path}",'w') as file:

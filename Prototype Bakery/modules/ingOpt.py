@@ -105,8 +105,8 @@ def add(ingListCurrent,targetFile):
         # Final actions depending on targetFile
         if targetFile == "inv.txt":
             ingListCurrent.append(f"{itemName} {itemUnit} {itemAmount}\n")
-            filehand.write("inv.txt",f"{''.join(sorted(ingListCurrent))}")
-        if targetFile == "rec.txt":
+            filehand.write("inv.txt",''.join(sorted(ingListCurrent)))
+        elif targetFile == "rec.txt":
             if '' in ingListCurrent:
                 ingListCurrent.remove('')
             ingListCurrent.append(f"{itemName} {itemUnit} {itemAmount}")
@@ -144,8 +144,8 @@ def delete(ingListCurrent,targetFile):
 
         # Final actions depending on targetFile
         if targetFile == "inv.txt":
-            filehand.write("inv.txt",f"{''.join(ingListCurrent)}")
-        if targetFile == "rec.txt":
+            filehand.write("inv.txt",''.join(ingListCurrent))
+        elif targetFile == "rec.txt":
             if not ingListCurrent:
                 ingListCurrent.append("")
             return ingListCurrent
@@ -230,8 +230,8 @@ def edit(ingListCurrent,targetFile):
 
         # Final actions depending on targetFile
         if targetFile == "inv.txt":
-            filehand.write("inv.txt",f"{''.join(sorted(ingListCurrent))}")
-        if targetFile == "rec.txt":
+            filehand.write("inv.txt",''.join(sorted(ingListCurrent)))
+        elif targetFile == "rec.txt":
             return sorted(ingListCurrent)
     else:
         return []
