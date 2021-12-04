@@ -64,7 +64,7 @@ def ingReqList():
         ingName=condensedRecIngList[i]
 
         # Stock amount
-        stockAmount='0'
+        stockAmount=0
         if ingName in invList:
             ingIndex=invList.index(ingName)
             amount=invList[ingIndex+2]
@@ -81,7 +81,7 @@ def ingReqList():
             shortfallAmount=f"{float(demandAmount)-float(stockAmount):.2f}"
 
         # Convert stock amount to N/A if value stays 0
-        if stockAmount=='0':
+        if stockAmount==0:
             stockAmount='N/A'
 
         # Standard unit: g if there is shortfall, otherwise append blank element as unit

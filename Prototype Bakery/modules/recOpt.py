@@ -190,7 +190,7 @@ def add():
             break
 
     # Append recipe name to rec.txt
-    if cancel != True:
+    if not cancel:
         filehand.append("rec.txt",f"{newName}\n")
 
 # Delete recipe
@@ -201,16 +201,16 @@ def delete():
         select=int(select)-1        
         selectedRec=getRecipeList()[select]
         # Delete recipe in recDesc.txt
-        if selectedRec in getRecDescListRaw():
-            descListRaw=getRecDescListRaw()
-            descIndex=getRecDescListRaw().index(selectedRec)
+        descListRaw=getRecDescListRaw()
+        if selectedRec in descListRaw:
+            descIndex=descListRaw.index(selectedRec)
             del descListRaw[descIndex:descIndex+2]
             filehand.writelines("recDesc.txt",descListRaw)
 
         # Delete recipe in orders.txt
-        if selectedRec in getOrderList():
-            orderListRaw=getOrderList()
-            orderIndex=getOrderList().index(selectedRec)
+        orderListRaw=getOrderList()
+        if selectedRec in orderListRaw:
+            orderIndex=orderListRaw.index(selectedRec)
             del orderListRaw[orderIndex:orderIndex+2]
             filehand.writelines("orders.txt",orderListRaw)
 
@@ -246,8 +246,8 @@ def description():
             newDescListRaw=getRecDescListRaw()
             recipe=getRecipeList()[select]
             # Edit recipe description if an old description existed
-            if recipe in getRecDescListRaw():
-                descIndex=getRecDescListRaw().index(recipe)
+            if recipe in newDescListRaw:
+                descIndex=newDescListRaw.index(recipe)
 
                 # Delete description if left blank
                 if not newDesc:

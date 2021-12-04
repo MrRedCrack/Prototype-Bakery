@@ -106,10 +106,11 @@ def pageRecIngredients(recipeNum):
     recipeName=recOpt.getRecipeList()[recipeNum]
     text=f"Ingredients for {recipeName}"
     printMod(f"{text:^80}")
-    if recOpt.getRecDesc(recipeName) == '':
+    desc=recOpt.getRecDesc(recipeName)
+    if  desc=='':
         printMod(f"{'No description.':^80}")
     else:
-        printMod(f"{recOpt.getRecDesc(recipeName):^80}")
+        printMod(f"{desc:^80}")
     printMod("="*80)
     pageIngredients(recOpt.getRecIngredients(recipeName))
     return recipeName
@@ -133,7 +134,7 @@ def pageOrder(toggleRecipes):
     for i in range(0,len(ordOpt.getOrderList()),2):
         index=i//2+1
         order=ordOpt.getOrderList()[i]
-        desc=recOpt.getRecDesc(ordOpt.getOrderList()[i])
+        desc=recOpt.getRecDesc(order)
         amount=ordOpt.getOrderList()[i+1]
         printMod(f"{index}. {order:<17} - {desc:<23}* {amount:<8}")
     print('')
@@ -154,7 +155,7 @@ def pageMRP1():
         for i in range(0,len(ordOpt.getOrderList()),2):
             index=i//2+1
             order=ordOpt.getOrderList()[i]
-            desc=recOpt.getRecDesc(ordOpt.getOrderList()[i])
+            desc=recOpt.getRecDesc(order)
             amount=ordOpt.getOrderList()[i+1]
             printMod(f"{index}. {order:<17} - {desc:<23}* {amount:<8}")
         print('')
@@ -188,50 +189,47 @@ def menuInv():
     while True:
         header(True)
         pageInventory()
+        ingListCurrent=filehand.read("inv.txt")
         option=prompt("Option  >>","adeb")
 
         if option == "B": # Back
             break
-
+        
         elif option == "A": # Add ingredient
-            ingOpt.add(filehand.read("inv.txt"),"inv.txt")
+            ingOpt.add(ingListCurrent,"inv.txt")
 
         elif option == "D": # Delete ingredient
-            ingOpt.delete(filehand.read("inv.txt"),"inv.txt")
+            ingOpt.delete(ingListCurrent,"inv.txt")
 
         elif option == "E": # Edit existing ingredient
-            ingOpt.edit(filehand.read("inv.txt"),"inv.txt")
+            ingOpt.edit(ingListCurrent,"inv.txt")
 
 # Recipe ingredients menu
 def menuRecIng():
-    while True:
-        # Options prompt with input range [number of recipes] and C;
-        # choose recipe by number to view ingredients
-        option=prompt(f"{'Select recipe no.':<20}[C]ancel: ",
-                      recOpt.getRecipeOptions())
-        if option == "C": # Cancel recipe selection
-            break
+    # Options prompt with input range [number of recipes] and C;
+    # choose recipe by number to view ingredients
+    option=prompt(f"{'Select recipe no.':<20}[C]ancel: ",
+                    recOpt.getRecipeOptions())
 
-        else:
-            # Recipe ingredients page
-            option=int(option)-1
-            while True:
-                header(True)
-                currentRecipeName=pageRecIngredients(option)
-                optionRecIng=prompt("Option  >>","adeb")
+    if option!="C":
+        # Recipe ingredients page
+        option=int(option)-1
+        while True:
+            header(True)
+            currentRecipeName=pageRecIngredients(option)
+            optionRecIng=prompt("Option  >>","adeb")
 
-                if optionRecIng == "B": # Back
-                    break
+            if optionRecIng == "B": # Back
+                break
 
-                elif optionRecIng == "A": # Add ingredient
-                    recOpt.rewriteRecIng(currentRecipeName,'A')
+            elif optionRecIng == "A": # Add ingredient
+                recOpt.rewriteRecIng(currentRecipeName,'A')
 
-                elif optionRecIng == "D": # Delete ingredient
-                    recOpt.rewriteRecIng(currentRecipeName,'D')
+            elif optionRecIng == "D": # Delete ingredient
+                recOpt.rewriteRecIng(currentRecipeName,'D')
 
-                elif optionRecIng == "E": # Edit ingredient
-                    recOpt.rewriteRecIng(currentRecipeName,'E')
-            break
+            elif optionRecIng == "E": # Edit ingredient
+                recOpt.rewriteRecIng(currentRecipeName,'E')
 
 #Recipe menu
 def menuRec():
@@ -270,7 +268,7 @@ def menuOrd():
             break
 
         elif option == "T": # Toggle "Available recipes" view
-            toggleRecipes= not toggleRecipes
+            toggleRecipes=not toggleRecipes
 
         elif option == "A": # Add order from existing recipe:
             ordOpt.add()
