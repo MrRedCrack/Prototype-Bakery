@@ -67,8 +67,6 @@ def add(ingListCurrent,targetFile):
             if itemUnit.upper() != "C":
                 if itemUnit not in ["g","kg","mg"]:
                     err=Err['unit']
-
-                if err:
                     printMod(err)
                 else:
                     break
@@ -87,7 +85,7 @@ def add(ingListCurrent,targetFile):
                     amount=unitConversion(float(itemAmount),itemUnit,"g")
                     if amount > 999999999:
                         err=Err['amountLarge']
-                    if amount < 0.01:
+                    elif amount < 0.01:
                         err=Err['amountSmall']
                 except:
                     err=Err['invalidNo']
@@ -125,8 +123,6 @@ def delete(ingListCurrent,targetFile):
         if itemName.upper() != "C":
             if not dup(itemName,ingListCurrent,'check'):
                 err=Err['noSuchName']
-
-            if err:
                 printMod(err)
             else:
                 break
@@ -164,8 +160,6 @@ def edit(ingListCurrent,targetFile):
         if itemName.upper() != "C":
             if not dup(itemName,ingListCurrent,'check'):
                 err=Err['noSuchName']
-
-            if err:
                 printMod(err)
             else:
                 break
@@ -182,8 +176,6 @@ def edit(ingListCurrent,targetFile):
             if itemUnit.upper() != "C":
                 if itemUnit not in ["g","kg","mg"]:
                     err=Err['unit']
-
-                if err:
                     printMod(err)
                 else:
                     break
@@ -202,7 +194,7 @@ def edit(ingListCurrent,targetFile):
                     amount=unitConversion(float(itemAmount),itemUnit,"g")
                     if amount > 999999999:
                         err=Err['amountLarge']
-                    if amount < 0.01:
+                    elif amount < 0.01:
                         err=Err['amountSmall']
                 except:
                     err=Err['invalidNo']
@@ -222,11 +214,10 @@ def edit(ingListCurrent,targetFile):
         for items in indexer:
             if itemName == items:
                 index=indexer.index(items)
-                ingListCurrent.remove(ingListCurrent[index])
                 if targetFile == "inv.txt":
-                    ingListCurrent.insert(index,f"{itemName} {itemUnit} {itemAmount}\n")
-                if targetFile == "rec.txt":
-                    ingListCurrent.insert(index,f"{itemName} {itemUnit} {itemAmount}")
+                    ingListCurrent[index]=f"{itemName} {itemUnit} {itemAmount}\n"
+                elif targetFile == "rec.txt":
+                    ingListCurrent[index]=f"{itemName} {itemUnit} {itemAmount}"
 
         # Final actions depending on targetFile
         if targetFile == "inv.txt":

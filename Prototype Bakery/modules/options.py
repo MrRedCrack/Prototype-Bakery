@@ -52,7 +52,7 @@ def unitConversion(amount,amountUnit,targetUnit):
 
 # Error dictionary
 Err={
-    #File error
+    # File error
     'missingInv':'Could not find inv.txt ... A new inv.txt was created.',
     'missingRec':'Could not find rec.txt ... A new rec.txt was created.',
     'missingRecDesc':'Could not find recDesc.txt ... A new recDesc.txt was created.',
@@ -62,7 +62,7 @@ Err={
     'noSuchName':'Item name not in list.',
     'itemDuplicate':'Duplicate name. Add a different item.',
     'nameDuplicate':'Name already exists!',
-    'nameLength':'Too long... Name length must be no more than 15 characters.',
+    'nameLength':'Invalid length... Name length must be at least 1, no more than 15 characters.',
     'nameSpace':'Invalid name. Please use symbols to replace blank spaces.',
     'unit':'Invalid unit. Accepted units are mg/g/kg',
     'amountLarge':'The amount is too large! Accepts no more than 999,999 kg',

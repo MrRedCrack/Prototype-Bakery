@@ -53,10 +53,11 @@ def add():
             addedAmount=inputMod(f"{'Add amount':<20}[C]ancel: ")
             try:
                 recipe=getRecipeList()[select]
-                if recipe in getOrderList():
-                    orderIndex=getOrderList().index(recipe)
+                orders=getOrderList()
+                if recipe in orders:
+                    orderIndex=orders.index(recipe)
                     orderAmtIndex=orderIndex+1             
-                    oldOrderAmount=int(getOrderList()[orderAmtIndex])
+                    oldOrderAmount=int(orders[orderAmtIndex])
                     total=int(addedAmount)+oldOrderAmount
                     orderExists=True
                 else:            
@@ -71,22 +72,20 @@ def add():
                 else:
                     err=Err['invalidInt']
 
-            if not cancel:
-                if err:
-                    printMod(err)
-                else:
-                    break
+            if err:
+                printMod(err)
+            else:
+                break
 
         if not cancel:
 
-            newOrderListRaw=getOrderList()
             # Update existing order amount
             if orderExists:
-                newOrderListRaw[orderAmtIndex]=str(total)
+                orders[orderAmtIndex]=str(total)
             else: # Append to order list
-                newOrderListRaw.append(getRecipeList()[select])
-                newOrderListRaw.append(addedAmount)
-            filehand.writelines("orders.txt",newOrderListRaw)
+                orders.append(recipe)
+                orders.append(addedAmount)
+            filehand.writelines("orders.txt",orders)
 
 # Delete order
 def delete():
@@ -121,11 +120,10 @@ def edit():
                 else:
                     err=Err['invalidInt']
 
-            if not cancel:
-                if err:
-                    printMod(err)
-                else:
-                    break
+            if err:
+                printMod(err)
+            else:
+                break
 
         if not cancel:
 

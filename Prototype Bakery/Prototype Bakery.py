@@ -302,7 +302,7 @@ def menuMRP():
             mrpOpt.save(partial(header,False),pageMRP1)
 
 '''
-main()
+Home page
 ---------------------------------------------------------------------------------------'''
 # Main menu
 while True:
